@@ -3,157 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CORE V1 Studio</title>
+    <title>CORE Studio</title>
     <style>
-        /* --- PROFESSIONAL STUDIO UI --- */
+        /* --- PREMIUM GLASSMORPHISM UI --- */
         :root {
-            --bg-deep: #09090b;
-            --bg-panel: #18181b;
-            --bg-card: #27272a;
-            --accent-blue: #3b82f6;
-            --accent-blue-glow: rgba(59, 130, 246, 0.4);
-            --accent-green: #10b981;
-            --text-main: #f4f4f5;
-            --text-dim: #a1a1aa;
-            --border: #3f3f46;
+            --bg-deep: #07070a;
+            --bg-panel: rgba(20, 20, 25, 0.65);
+            --bg-card: rgba(30, 30, 38, 0.5);
+            --accent-blue: #00e5ff;
+            --accent-blue-glow: rgba(0, 229, 255, 0.5);
+            --accent-red: #ff2a40;
+            --accent-red-glow: rgba(255, 42, 64, 0.4);
+            --accent-green: #00ff88;
+            --color-drive: #ff5e00;
+            --color-mod: #00e5ff;
+            --color-time: #b042ff;
+            --color-dyn: #e2e8f0;
+            --text-main: #ffffff;
+            --text-dim: #8b95a5;
+            --border: rgba(255, 255, 255, 0.08);
+            --glass-blur: blur(16px);
+        }
+        /* --- LIGHT MODE OVERRIDES --- */
+        body.light-mode {
+            background: var(--bg-deep); /* THIS OVERRIDES THE DARK GRADIENT */
+            --bg-deep: #f1f5f9;
+            --bg-panel: rgba(255, 255, 255, 0.75);
+            --bg-card: rgba(248, 250, 252, 0.8);
+            --text-main: #0f172a;
+            --text-dim: #64748b;
+            --border: rgba(0, 0, 0, 0.1);
+            --accent-blue: #0284c7; /* Darker blue for contrast on light backgrounds */
+            --accent-blue-glow: rgba(2, 132, 199, 0.3);
         }
 
-        body { margin: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: var(--bg-deep); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; user-select: none; }
+        /* Ultra-Clean Light Mode Background */
+        body.light-mode::before {
+            background: radial-gradient(circle at 50% -20%, #ffffff 0%, transparent 100%),
+                        radial-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 18px 18px;
+        }
+
+        /* Make pedals look like white frosted glass */
+        body.light-mode .slot.filled {
+            background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(241,245,249,0.95) 100%);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,1);
+        }
+
+        /* Make the rotary knobs silver/light gray */
+        body.light-mode .knob-inner {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            box-shadow: inset 0 -1px 2px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.1);
+        }
+        body.light-mode .knob-indicator { background: var(--accent-blue); }
+        
+        /* Auto-invert the white CORE logo to dark slate so you can see it */
+        body.light-mode .brand-container img {
+            filter: invert(1) brightness(0.2);
+        }
+        /* 1. Fix the giant background text watermark */
+        body.light-mode .preset-title-display {
+            color: rgba(0, 0, 0, 0.04);
+        }
+
+        /* 2. Fix the empty slots and "Drop Effect Here" text */
+        body.light-mode .slot:not(.filled) {
+            border-color: rgba(0, 0, 0, 0.15);
+            background: rgba(0, 0, 0, 0.02);
+        }
+        body.light-mode .empty-text {
+            color: rgba(0, 0, 0, 0.3);
+        }
+
+        /* 3. Fix the inactive/empty signal wires */
+        body.light-mode .signal-wire:not(.active) {
+            background: rgba(0, 0, 0, 0.1);
+        }
+        body.light-mode .signal-wire:not(.active)::after {
+            border-left-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body { 
+            margin: 0; 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+            background: radial-gradient(circle at 50% -20%, #1a1a24 0%, var(--bg-deep) 100%);
+            color: var(--text-main); 
+            display: flex; flex-direction: column; height: 100vh; overflow: hidden; user-select: none; 
+        }
         
         /* HEADER NAV */
-        header { background-color: var(--bg-panel); border-bottom: 1px solid var(--border); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10; flex-shrink: 0; }
-        .nav-left { display: flex; align-items: center; gap: 20px; width: 300px; }
+        header { 
+            background: var(--bg-panel); 
+            backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--border); 
+            padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8); z-index: 10; flex-shrink: 0; 
+        }
+        .nav-left { display: flex; align-items: center; gap: 20px; width: 320px; }
         .nav-center { display: flex; align-items: center; gap: 15px; flex-grow: 1; justify-content: center; }
-        .nav-right { width: 300px; text-align: right; }
+        .nav-right { width: 320px; display: flex; justify-content: flex-end; gap: 10px; }
         
-        h1 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 2px; color: var(--text-main); }
+        .brand-container { display: flex; align-items: center; gap: 12px; }
+        .brand-container img { height: 28px; filter: drop-shadow(0 0 8px rgba(255,200,100,0.3)); }
+        .brand-text { font-size: 16px; font-weight: 800; letter-spacing: 3px; color: var(--text-main); margin: 0; text-transform: uppercase; }
         
-        button { background-color: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); padding: 10px 20px; font-size: 14px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; }
-        button:hover { background-color: #3f3f46; }
-        button:active { transform: scale(0.98); }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        button { 
+            background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); 
+            padding: 10px 20px; font-size: 13px; border-radius: 6px; cursor: pointer; 
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        button:hover { background: rgba(255,255,255,0.1); }
+        button:active { transform: scale(0.96); }
+        button:disabled { opacity: 0.4; cursor: not-allowed; }
         
-        #connectBtn { background-color: var(--accent-blue); border-color: var(--accent-blue); color: white; }
-        #connectBtn:hover { background-color: #2563eb; box-shadow: 0 0 15px var(--accent-blue-glow); }
+        #connectBtn { background: transparent; border-color: var(--accent-blue); color: var(--accent-blue); }
+        #connectBtn:hover { background: rgba(0, 229, 255, 0.1); box-shadow: 0 0 15px var(--accent-blue-glow); }
         
-        #uploadBtn { background-color: var(--accent-green); border-color: var(--accent-green); color: white; padding: 12px 24px; }
-        #uploadBtn:hover:not(:disabled) { background-color: #059669; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); }
+        #uploadBtn { background: var(--accent-blue); border-color: var(--accent-blue); color: #000; }
+        #uploadBtn:hover:not(:disabled) { background: #00ffff; box-shadow: 0 0 20px var(--accent-blue-glow); }
 
-        .preset-control { display: flex; align-items: center; background: var(--bg-deep); border-radius: 8px; border: 1px solid var(--border); overflow: hidden; }
+        #muteBtn { background: transparent; border-color: var(--accent-red); color: var(--accent-red); }
+        #muteBtn:hover { background: rgba(255, 42, 64, 0.1); box-shadow: 0 0 15px var(--accent-red-glow); }
+        #muteBtn.muted { background: var(--accent-red); color: #fff; box-shadow: 0 0 20px var(--accent-red-glow); }
+
+        .preset-control { display: flex; align-items: center; background: rgba(0,0,0,0.4); border-radius: 8px; border: 1px solid var(--border); }
         .preset-btn { border: none; background: transparent; padding: 10px 15px; font-size: 16px; border-radius: 0; }
-        .preset-btn:hover { background: var(--bg-card); }
         
-        input[type="text"] { background-color: transparent; color: white; border: none; padding: 10px; font-size: 18px; text-align: center; width: 160px; font-weight: 700; outline: none; border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
-        input[type="text"]:focus { background-color: rgba(255,255,255,0.05); }
+        input[type="text"] { background: transparent; color: white; border: none; padding: 10px; font-size: 16px; text-align: center; width: 140px; font-weight: 800; letter-spacing: 1px; outline: none; border-left: 1px solid var(--border); border-right: 1px solid var(--border); text-transform: uppercase; }
+        input[type="text"]:focus { background: rgba(255,255,255,0.05); }
         
-        #status { font-size: 13px; font-weight: 700; color: #ef4444; display: flex; align-items: center; gap: 6px; }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; background-color: #ef4444; }
+        #status { font-size: 11px; font-weight: 700; color: var(--text-dim); display: flex; align-items: center; gap: 6px; letter-spacing: 1px; text-transform: uppercase; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
 
         /* MAIN LAYOUT */
         main { display: flex; flex-grow: 1; overflow: hidden; }
         
         /* SIDEBAR CATALOG */
-        aside { width: 280px; background-color: var(--bg-panel); border-right: 1px solid var(--border); padding: 25px 20px; overflow-y: auto; flex-shrink: 0; }
-        aside h3 { margin-top: 0; color: var(--text-dim); font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px; }
+        aside { 
+            width: 260px; background: var(--bg-panel); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border-right: 1px solid var(--border); padding: 25px 20px; overflow-y: auto; flex-shrink: 0; box-shadow: 5px 0 30px rgba(0,0,0,0.5); z-index: 5;
+        }
+        aside h3 { margin-top: 0; color: var(--accent-blue); font-size: 10px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
         
-        .catalog-item { background: linear-gradient(145deg, var(--bg-card), #202022); border: 2px solid var(--border); padding: 12px 15px; margin-bottom: 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 14px; transition: all 0.2s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.2); }
-        .catalog-item:hover { border-color: var(--text-dim); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.4); }
-        .catalog-item.selected { border-color: var(--accent-blue); box-shadow: 0 0 12px var(--accent-blue-glow); }
-        .icon { font-size: 18px; width: 24px; text-align: center; }
+        .catalog-item { 
+            background: var(--bg-card); border: 1px solid var(--border); padding: 12px 15px; margin-bottom: 8px; 
+            border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-weight: 600; 
+            font-size: 13px; transition: all 0.2s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
+        }
+        .catalog-item:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); transform: translateX(5px); }
+        .catalog-item.selected { border-color: var(--accent-blue); box-shadow: 0 0 15px var(--accent-blue-glow); }
+        
+        /* SVG ICON STYLING */
+        .icon { width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
+        .icon svg { width: 100%; height: 100%; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        .icon-drive { stroke: var(--color-drive); filter: drop-shadow(0 0 4px var(--color-drive)); }
+        .icon-mod { stroke: var(--color-mod); filter: drop-shadow(0 0 4px var(--color-mod)); }
+        .icon-time { stroke: var(--color-time); filter: drop-shadow(0 0 4px var(--color-time)); }
+        .icon-dyn { stroke: var(--color-dyn); filter: drop-shadow(0 0 4px rgba(255,255,255,0.5)); }
 
         /* EFFECTS CHAIN AREA */
-        .board-area { flex-grow: 1; background: radial-gradient(circle at center, #18181b 0%, #09090b 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow-y: auto; }
+        .board-area { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow-y: auto; }
         
-        .preset-title-display { position: absolute; top: 40px; color: var(--text-dim); font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+        .preset-title-display { position: absolute; top: 40px; color: rgba(255,255,255,0.03); font-size: 80px; font-weight: 900; letter-spacing: 10px; text-transform: uppercase; z-index: 0; pointer-events: none; }
 
-        .chain-container { display: flex; gap: 15px; align-items: center; justify-content: center; padding: 40px; background: rgba(0,0,0,0.2); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap; }
+        .chain-container { display: flex; gap: 20px; align-items: center; justify-content: center; padding: 40px; z-index: 1; flex-wrap: wrap; }
         
-        .slot-wrapper { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .slot-wrapper { display: flex; flex-direction: column; align-items: center; gap: 0px; }
         
-        .slot { width: 150px; height: 200px; background-color: rgba(39, 39, 42, 0.3); border: 2px dashed var(--border); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: all 0.2s ease; position: relative; cursor: pointer; }
-        .slot.drag-over { background-color: var(--accent-blue-glow); border-color: var(--accent-blue); transform: scale(1.02); }
+        /* GLASSMORPHISM PEDAL CARDS */
+        .slot { 
+            width: 150px; height: 280px; 
+            background: rgba(20, 20, 25, 0.4); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px dashed rgba(255,255,255,0.1); 
+            border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
+            padding-top: 25px; text-align: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            position: relative; cursor: pointer; box-sizing: border-box; 
+        }
+        .slot.drag-over { background: rgba(0, 229, 255, 0.1); border-color: var(--accent-blue); transform: scale(1.02); }
         
-        .slot.filled { border: 1px solid #52525b; background: linear-gradient(180deg, #27272a 0%, #18181b 100%); box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1); }
+        .slot.filled { 
+            border: 1px solid rgba(255,255,255,0.15); 
+            background: linear-gradient(180deg, rgba(40,40,48,0.7) 0%, rgba(20,20,25,0.9) 100%); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2); 
+            border-top: 2px solid var(--accent-blue);
+        }
+        .slot.filled.type-drive { border-top-color: var(--color-drive); }
+        .slot.filled.type-mod { border-top-color: var(--color-mod); }
+        .slot.filled.type-time { border-top-color: var(--color-time); }
+        .slot.filled.type-dyn { border-top-color: var(--color-dyn); }
+
+        .slot.filled:hover { transform: translateY(-5px); box-shadow: 0 20px 45px rgba(0,0,0,0.8); }
         
-        .remove-btn { position: absolute; top: -10px; right: -10px; background: #ef4444; color: white; width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; opacity: 0; transform: scale(0.8); transition: all 0.2s ease; border: 2px solid var(--bg-deep); box-shadow: 0 4px 8px rgba(0,0,0,0.5); z-index: 5; }
+        .remove-btn { 
+            position: absolute; top: -10px; right: -10px; background: var(--bg-deep); color: var(--text-dim); 
+            width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 12px; cursor: pointer; opacity: 0; transform: scale(0.8); transition: all 0.2s ease; 
+            border: 1px solid var(--border); box-shadow: 0 4px 8px rgba(0,0,0,0.5); z-index: 5; 
+        }
         .slot.filled:hover .remove-btn { opacity: 1; transform: scale(1); }
-        .remove-btn:active { background: #dc2626; opacity: 1; transform: scale(1); } 
+        .remove-btn:hover { background: var(--accent-red); color: white; border-color: var(--accent-red); box-shadow: 0 0 10px var(--accent-red-glow); }
 
-        .slot-icon { font-size: 48px; margin-bottom: 15px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4)); }
-        .slot-name { font-weight: 700; font-size: 15px; color: var(--text-main); }
-        .empty-text { color: #52525b; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+        .slot-icon { width: 40px; height: 40px; margin-bottom: 8px; display: flex; justify-content: center; align-items: center; }
+        .slot-icon svg { width: 100%; height: 100%; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .slot-name { font-weight: 800; font-size: 13px; color: var(--text-main); margin-bottom: 20px; letter-spacing: 1px; text-transform: uppercase; }
+        .empty-text { color: var(--text-dim); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin-top: 100px; opacity: 0.5; }
 
-        .knob-target { background-color: var(--bg-deep); border: 1px solid var(--border); padding: 8px 16px; border-radius: 20px; font-size: 12px; cursor: pointer; color: var(--text-dim); font-weight: 700; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; margin-top: -5px; }
-        .knob-target:hover { background-color: var(--bg-card); color: white; }
-        .knob-target.active { background-color: var(--accent-blue); border-color: var(--accent-blue); color: white; box-shadow: 0 0 15px var(--accent-blue-glow); }
+        /* ROTARY KNOB CSS */
+        .param-container { width: 100%; display: flex; flex-direction: column; gap: 15px; padding: 0 15px; box-sizing: border-box; }
+        .param-row { display: flex; align-items: center; justify-content: space-between; width: 100%; }
         
-        .arrow { color: #52525b; font-size: 20px; font-weight: bold; }
+        .param-info { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; width: 60px; }
+        .param-label { font-size: 9px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+        
+        .knob-wrapper { position: relative; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; }
+        .knob { 
+            width: 36px; height: 36px; border-radius: 50%; 
+            background: conic-gradient(from 225deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.05) 270deg, transparent 270deg);
+            border: 1px solid rgba(0,0,0,0.8); box-shadow: inset 0 2px 4px rgba(255,255,255,0.1), 0 5px 10px rgba(0,0,0,0.6); 
+            position: relative; cursor: ns-resize; 
+        }
+        .knob-inner { 
+            position: absolute; top: 4px; left: 4px; right: 4px; bottom: 4px; 
+            background: linear-gradient(135deg, #2a2a35 0%, #1a1a24 100%); 
+            border-radius: 50%; box-shadow: inset 0 -1px 2px rgba(0,0,0,0.8); 
+        }
+        .knob-indicator { 
+            position: absolute; width: 3px; height: 8px; background: var(--text-main); 
+            top: 2px; left: 50%; transform-origin: 50% 12px; transform: translateX(-50%) rotate(-135deg); 
+            border-radius: 2px; box-shadow: 0 0 5px rgba(255,255,255,0.5); pointer-events: none;
+        }
+        
+        input[type=number].param-number { 
+            width: 32px; background: rgba(0,0,0,0.5); color: var(--text-main); 
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; font-size: 11px; 
+            text-align: center; font-weight: 800; padding: 4px 2px; -moz-appearance: textfield; 
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+        }
+        input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number]:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 8px var(--accent-blue-glow); }
+        input[type=number]:disabled { color: var(--text-dim); border-color: transparent; background: transparent; box-shadow: none; }
 
-        .footer-hint { margin-top: 20px; color: #52525b; font-size: 13px; font-weight: 600; text-align: center; padding: 0 20px 20px 20px; }
+        .target-btn { cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; padding: 2px; }
 
-        /* --- MOBILE RESPONSIVE CSS FIX --- */
+        /* GLOWING SIGNAL WIRES */
+        .signal-wire { 
+            width: 30px; height: 3px; background: rgba(255,255,255,0.05); 
+            border-radius: 2px; transition: all 0.3s ease; position: relative; 
+        }
+        .signal-wire.active { background: var(--accent-blue); box-shadow: 0 0 12px var(--accent-blue-glow); }
+        .signal-wire::after { 
+            content: ''; position: absolute; right: -4px; top: -3px; 
+            border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 6px solid rgba(255,255,255,0.05); 
+            transition: all 0.3s ease;
+        }
+        .signal-wire.active::after { border-left-color: var(--accent-blue); filter: drop-shadow(0 0 4px var(--accent-blue-glow)); }
+
+        .footer-hint { margin-top: 20px; color: var(--text-dim); font-size: 12px; font-weight: 600; text-align: center; padding: 0 20px 20px 20px; letter-spacing: 1px; }
+
+        /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 900px) {
-            body { 
-                height: auto; 
-                min-height: 100vh; 
-                overflow-y: auto; 
-            }
-            header { 
-                flex-direction: column; 
-                gap: 15px; 
-                padding: 15px; 
-            }
+            body { height: auto; min-height: 100vh; overflow-y: auto; }
+            header { flex-direction: column; gap: 15px; padding: 15px; }
             .nav-left, .nav-center, .nav-right { width: 100%; justify-content: center; text-align: center; }
-            .nav-left { flex-direction: column; gap: 5px; }
-            
+            .nav-left { flex-direction: column; gap: 10px; }
+            .nav-right { flex-direction: row; justify-content: center; }
             main { flex-direction: column; overflow-y: visible; }
-            
-            /* Move catalog to the bottom for mobile */
             aside { width: 100%; order: 2; border-right: none; border-top: 1px solid var(--border); padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; box-sizing: border-box; }
             aside h3 { grid-column: 1 / -1; margin-top: 15px; margin-bottom: 5px; }
-            .catalog-item { margin-bottom: 0; padding: 10px; font-size: 13px; }
-            
-            /* The Layout Fix */
-            .board-area { 
-                order: 1; 
-                padding: 30px 0; 
-                justify-content: flex-start; /* Stops the pedals from pushing up into the header */
-            }
-            .preset-title-display { position: relative; top: 0; margin-bottom: 15px; }
-            
-            /* Wrap the pedalboard so it fits on a phone screen */
-            .chain-container { flex-wrap: wrap; justify-content: center; padding: 15px; background: transparent; border: none; box-shadow: none; gap: 15px; margin-top: 10px; }
-            .slot-wrapper { gap: 10px; }
-            .slot { width: 105px; height: 140px; }
-            .slot-icon { font-size: 32px; margin-bottom: 8px; }
-            .slot-name { font-size: 12px; }
-            .empty-text { font-size: 11px; }
-            .arrow { display: none; } /* Hide arrows on mobile to prevent layout breakage */
-            
-            /* Always show remove button on mobile since there is no mouse hover */
-            .remove-btn { opacity: 1; transform: scale(1); top: -5px; right: -5px; width: 22px; height: 22px; font-size: 12px; }
+            .catalog-item { margin-bottom: 0; padding: 10px; font-size: 12px; }
+            .board-area { order: 1; padding: 30px 0; justify-content: flex-start; }
+            .preset-title-display { position: relative; top: 0; margin-bottom: 15px; font-size: 40px; }
+            .chain-container { flex-wrap: wrap; justify-content: center; padding: 15px; gap: 15px; }
+            .slot { width: 140px; height: 260px; padding-top: 15px; }
+            .signal-wire { display: none; }
+            .remove-btn { opacity: 1; transform: scale(1); top: -5px; right: -5px; }
         }
+        /* --- BYPASS FEATURE CSS --- */
+        .bypass-btn { position: absolute; top: 12px; left: 12px; cursor: pointer; font-size: 14px; z-index: 5; transition: all 0.2s; }
+        .bypass-btn:hover { text-shadow: 0 0 8px rgba(255,255,255,0.8); transform: scale(1.1); }
+        .slot.bypassed { border-color: var(--accent-red) !important; box-shadow: 0 0 15px rgba(255, 42, 64, 0.1) !important; }
+        .slot.bypassed .slot-icon, .slot.bypassed .slot-name, .slot.bypassed .param-container { opacity: 0.25; pointer-events: none; filter: grayscale(100%); }
     </style>
 </head>
 <body>
 
     <header>
         <div class="nav-left">
-            <h1>CORE_V1</h1>
+            <div class="brand-container">
+                <img src="CORE.png" alt="CORE Logo" style="height: 52px;">
+            </div>
             <div id="status"><div class="status-dot" id="statusDot"></div><span id="statusText">Disconnected</span></div>
         </div>
-        
         <div class="nav-center">
             <div class="preset-control">
                 <button class="preset-btn" onclick="changePreset(-1)">&#9664;</button>
                 <input type="text" id="presetNameInput" maxlength="11" oninput="saveState()">
                 <button class="preset-btn" onclick="changePreset(1)">&#9654;</button>
             </div>
-            <span style="color:var(--text-dim); font-weight:700; font-size: 14px; margin-left: 10px;" id="presetLabel">PRESET 1</span>
+            <span style="color:var(--text-dim); font-weight:800; font-size: 12px; margin-left: 15px; letter-spacing: 2px;" id="presetLabel">PRESET 1</span>
         </div>
-        
         <div class="nav-right">
-            <button id="connectBtn" onclick="connectBluetooth()">Pair Device</button>
+            <button id="themeBtn" onclick="toggleTheme()" style="border-color: var(--text-dim); color: var(--text-dim); background: transparent;">☀️ Light</button>
+            <button id="muteBtn" onclick="toggleMute()">⏻ Mute</button>
+            <button id="connectBtn" onclick="toggleConnection()">Pair Device</button>
             <button id="uploadBtn" onclick="uploadToGuitar()" disabled>Upload to Guitar</button>
         </div>
     </header>
@@ -161,54 +314,114 @@
     <main>
         <section class="board-area">
             <div class="preset-title-display" id="bgPresetTitle">SIGNAL CHAIN</div>
-            <div class="chain-container">
-                </div>
-            <div class="footer-hint">Desktop: Drag & Drop. Mobile: Tap catalog item, then tap slot to place.</div>
+            <div id="auxTargetContainer" style="position: absolute; top: 20px; right: 30px; z-index: 10;"></div>
+            <div class="chain-container"></div>
+            <div class="footer-hint">Desktop: Drag & Drop. Knobs: Click & Drag Up/Down. Mobile: Tap catalog item, then tap slot.</div>
         </section>
 
         <aside id="catalog">
             <h3>Dynamics / EQ</h3>
-            <div class="catalog-item" draggable="true" data-hex="09" data-name="Compressor" data-icon="🗜️"><span class="icon">🗜️</span> Compressor</div>
-            <div class="catalog-item" draggable="true" data-hex="0D" data-name="Tone EQ" data-icon="🎚️"><span class="icon">🎚️</span> Tone EQ</div>
-            <div class="catalog-item" draggable="true" data-hex="0E" data-name="Noise Gate" data-icon="🚪"><span class="icon">🚪</span> Noise Gate</div>
+            <div class="catalog-item" draggable="true" data-hex="09" data-name="Compressor" data-cat="dyn"></div>
+            <div class="catalog-item" draggable="true" data-hex="0D" data-name="Tone EQ" data-cat="dyn"></div>
+            <div class="catalog-item" draggable="true" data-hex="0E" data-name="Noise Gate" data-cat="dyn"></div>
+            <div class="catalog-item" draggable="true" data-hex="10" data-name="Vol Boost" data-cat="dyn"></div>
             
             <h3>Drive / Amps</h3>
-            <div class="catalog-item" draggable="true" data-hex="02" data-name="Distortion" data-icon="🔥"><span class="icon">🔥</span> Distortion</div>
-            <div class="catalog-item" draggable="true" data-hex="01" data-name="Amp Sim" data-icon="📻"><span class="icon">📻</span> Amp Sim</div>
-            <div class="catalog-item" draggable="true" data-hex="08" data-name="Cab Sim" data-icon="🔈"><span class="icon">🔈</span> Cab Sim</div>
-            <div class="catalog-item" draggable="true" data-hex="07" data-name="Aco Sim" data-icon="🎸"><span class="icon">🎸</span> Aco Sim</div>
+            <div class="catalog-item" draggable="true" data-hex="02" data-name="Distortion" data-cat="drive"></div>
+            <div class="catalog-item" draggable="true" data-hex="01" data-name="Amp Sim" data-cat="drive"></div>
+            <div class="catalog-item" draggable="true" data-hex="08" data-name="Cab Sim" data-cat="drive"></div>
+            <div class="catalog-item" draggable="true" data-hex="07" data-name="Aco Sim" data-cat="drive"></div>
 
             <h3>Modulation</h3>
-            <div class="catalog-item" draggable="true" data-hex="04" data-name="Chorus" data-icon="🌊"><span class="icon">🌊</span> Chorus</div>
-            <div class="catalog-item" draggable="true" data-hex="0A" data-name="Phaser" data-icon="🛸"><span class="icon">🛸</span> Phaser</div>
-            <div class="catalog-item" draggable="true" data-hex="0B" data-name="Flanger" data-icon="✈️"><span class="icon">✈️</span> Flanger</div>
-            <div class="catalog-item" draggable="true" data-hex="03" data-name="Tremolo" data-icon="〰️"><span class="icon">〰️</span> Tremolo</div>
-            <div class="catalog-item" draggable="true" data-hex="0C" data-name="AutoWah" data-icon="🦆"><span class="icon">🦆</span> AutoWah</div>
+            <div class="catalog-item" draggable="true" data-hex="04" data-name="Chorus" data-cat="mod"></div>
+            <div class="catalog-item" draggable="true" data-hex="0A" data-name="Phaser" data-cat="mod"></div>
+            <div class="catalog-item" draggable="true" data-hex="0B" data-name="Flanger" data-cat="mod"></div>
+            <div class="catalog-item" draggable="true" data-hex="03" data-name="Tremolo" data-cat="mod"></div>
+            <div class="catalog-item" draggable="true" data-hex="0C" data-name="AutoWah" data-cat="mod"></div>
 
-            <h3>Time</h3>
-            <div class="catalog-item" draggable="true" data-hex="05" data-name="Delay" data-icon="🔁"><span class="icon">🔁</span> Delay</div>
-            <div class="catalog-item" draggable="true" data-hex="06" data-name="Reverb" data-icon="⛪"><span class="icon">⛪</span> Reverb</div>
+            <h3>Time / Pitch</h3>
+            <div class="catalog-item" draggable="true" data-hex="05" data-name="Delay" data-cat="time"></div>
+            <div class="catalog-item" draggable="true" data-hex="06" data-name="Reverb" data-cat="time"></div>
+            <div class="catalog-item" draggable="true" data-hex="0F" data-name="Octaver" data-cat="time"></div>
         </aside>
     </main>
 
     <script>
         const SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"; 
         const TX_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e"; 
+        let connectedDevice = null;
         let bleCharacteristic = null;
+        let isMuted = false;
 
         let currentPresetIndex = 0;
         let presets = [
-            { name: "Rock",    slots: ["02", "08", "05", "00", "00"], knob: 2 },
-            { name: "Tremolo", slots: ["03", "06", "00", "00", "00"], knob: 0 },
-            { name: "Aco Sim", slots: ["07", "06", "00", "00", "00"], knob: 0 },
-            { name: "Empty",   slots: ["00", "00", "00", "00", "00"], knob: 0 },
-            { name: "Empty",   slots: ["00", "00", "00", "00", "00"], knob: 0 }
+            { name: "Psych",   slots: ["0B", "02", "08", "05", "00"], knob: 2, params: [[64,64,64], [64,64,64], [64,64,64], [58,64,59], [50,50,50]] },
+            { name: "Tremolo", slots: ["03", "06", "00", "00", "00"], knob: 0, params: [[50,50,50], [50,50,50], [50,50,50], [50,50,50], [50,50,50]] },
+            { name: "Aco Sim", slots: ["07", "06", "00", "00", "00"], knob: 0, params: [[50,50,50], [50,50,50], [50,50,50], [50,50,50], [50,50,50]] },
+            { name: "Empty",   slots: ["00", "00", "00", "00", "00"], knob: 0, params: [[50,50,50], [50,50,50], [50,50,50], [50,50,50], [50,50,50]] },
+            { name: "Empty",   slots: ["00", "00", "00", "00", "00"], knob: 0, params: [[50,50,50], [50,50,50], [50,50,50], [50,50,50], [50,50,50]] }
         ];
+        const targetSvg = `<svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>`;
+
+        // --- CUSTOM SVG ICONS DICTIONARY ---
+        const svgs = {
+            "Empty": "",
+            "Amp Sim": `<svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="12" rx="2" stroke-width="2"/><rect x="14" y="4" width="4" height="12" rx="2" stroke-width="2"/><path d="M4 16h16M8 16v4M16 16v4" stroke-width="2"/></svg>`,
+            "Distortion": `<svg viewBox="0 0 24 24"><path d="M2 12 C 4 6, 6 4, 8 4 L 16 4 C 18 4, 20 6, 22 12" stroke-width="2"/></svg>`,
+            "Tremolo": `<svg viewBox="0 0 24 24"><path d="M2 12 Q4 8 6 12 T10 12 Q12 4 14 12 T18 12 Q20 8 22 12" stroke-width="2"/></svg>`,
+            "Chorus": `<svg viewBox="0 0 24 24"><path d="M2 12 Q 7 2, 12 12 T 22 12" stroke-width="2"/><path d="M2 12 Q 7 7, 12 12 T 22 12" stroke-width="2" opacity="0.4"/></svg>`,
+            "Delay": `<svg viewBox="0 0 24 24"><circle cx="6" cy="16" r="2" fill="currentColor" stroke="none"/><line x1="8" y1="16" x2="8" y2="8" stroke-width="2"/><circle cx="14" cy="16" r="1.5" fill="currentColor" opacity="0.6" stroke="none"/><line x1="15.5" y1="16" x2="15.5" y2="10" stroke-width="2" opacity="0.6"/><circle cx="20" cy="16" r="1" fill="currentColor" opacity="0.3" stroke="none"/></svg>`,
+            "Reverb": `<svg viewBox="0 0 24 24"><path d="M4 12 Q 10 4, 20 4 V 20 Q 10 20, 4 12" stroke-width="2"/></svg>`,
+            "Aco Sim": `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke-width="2"/><line x1="10" y1="2" x2="10" y2="22" stroke-width="1"/><line x1="12" y1="2" x2="12" y2="22" stroke-width="1"/><line x1="14" y1="2" x2="14" y2="22" stroke-width="1"/></svg>`,
+            "Cab Sim": `<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" stroke-width="2"/><circle cx="12" cy="12" r="5" stroke-width="2"/><circle cx="6" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="18" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="6" cy="18" r="1" fill="currentColor" stroke="none"/><circle cx="18" cy="18" r="1" fill="currentColor" stroke="none"/></svg>`,
+            "Compressor": `<svg viewBox="0 0 24 24"><path d="M12 8 V16 M8 12 Q12 8 16 12 M8 12 Q12 16 16 12" stroke-width="2"/><path d="M12 2 V5 M12 22 V19" stroke-width="3"/></svg>`,
+            "Phaser": `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke-width="2"/><line x1="4" y1="20" x2="20" y2="4" stroke-width="2"/></svg>`,
+            "Flanger": `<svg viewBox="0 0 24 24"><path d="M12 2 L12 22 M7 10 L12 8 L17 10 M9 18 L12 16 L15 18" stroke-width="2"/></svg>`,
+            "AutoWah": `<svg viewBox="0 0 24 24"><path d="M2 16 L8 16 L12 4 L16 16 L22 16" stroke-width="2" stroke-linejoin="round"/></svg>`,
+            "Tone EQ": `<svg viewBox="0 0 24 24"><line x1="6" y1="4" x2="6" y2="20" stroke-width="2"/><line x1="12" y1="4" x2="12" y2="20" stroke-width="2"/><line x1="18" y1="4" x2="18" y2="20" stroke-width="2"/><circle cx="6" cy="8" r="2" fill="currentColor" stroke="none"/><circle cx="12" cy="16" r="2" fill="currentColor" stroke="none"/><circle cx="18" cy="12" r="2" fill="currentColor" stroke="none"/></svg>`,
+            "Noise Gate": `<svg viewBox="0 0 24 24"><line x1="2" y1="12" x2="8" y2="12" stroke-width="2"/><path d="M10 4 V20 M14 4 V20 M10 12 H14" stroke-width="2"/><line x1="16" y1="12" x2="22" y2="12" stroke-width="2"/></svg>`,
+            "Octaver": `<svg viewBox="0 0 24 24"><path d="M12 2 L16 6 M12 2 L8 6 M12 2 V10 M12 22 L16 18 M12 22 L8 18 M12 22 V14" stroke-width="2"/></svg>`,
+            "Vol Boost": `<svg viewBox="0 0 24 24"><path d="M4 15 V9 H8 L13 4 V20 L8 15 Z" stroke-width="2"/><path d="M17 9 A 4 4 0 0 1 17 15 M20 6 A 8 8 0 0 1 20 18" stroke-width="2"/></svg>`
+        };
+
+        const effectDict = {
+            "00": { name: "Empty", cat: "", knobs: [] },
+            "01": { name: "Amp Sim", cat: "drive", knobs: ["Drive", "Tone", "Level"] },
+            "02": { name: "Distortion", cat: "drive", knobs: ["Drive", "Tone", "Level"] },
+            "03": { name: "Tremolo", cat: "mod", knobs: ["Speed", "Depth", "Level"] },
+            "04": { name: "Chorus", cat: "mod", knobs: ["Rate", "Depth", "Mix"] },
+            "05": { name: "Delay", cat: "time", knobs: ["Time", "Fdbk", "Mix"] },
+            "06": { name: "Reverb", cat: "time", knobs: ["Size", "Damp", "Mix"] },
+            "07": { name: "Aco Sim", cat: "drive", knobs: ["Body", "Sparkle", "Level"] },
+            "08": { name: "Cab Sim", cat: "drive", knobs: ["Cutoff", "Res", "Level"] },
+            "09": { name: "Compressor", cat: "dyn", knobs: ["Thresh", "Ratio", "Level"] },
+            "0A": { name: "Phaser", cat: "mod", knobs: ["Rate", "Depth", "Fdbk"] },
+            "0B": { name: "Flanger", cat: "mod", knobs: ["Rate", "Depth", "Fdbk"] },
+            "0C": { name: "AutoWah", cat: "mod", knobs: ["Sens", "Q", "Mix"] },
+            "0D": { name: "Tone EQ", cat: "dyn", knobs: ["Freq", "Res", "Level"] },
+            "0E": { name: "Noise Gate", cat: "dyn", knobs: ["Thresh", "Decay", "Level"] },
+            "0F": { name: "Octaver", cat: "time", knobs: ["Shift", "Tone", "Mix"] },
+            "10": { name: "Vol Boost", cat: "dyn", knobs: ["Gain", "---", "---"] }
+        };
+
+        // Render Catalog Items with SVGs
+        document.querySelectorAll('.catalog-item').forEach(item => {
+            let name = item.getAttribute('data-name');
+            let cat = item.getAttribute('data-cat');
+            item.innerHTML = `<span class="icon icon-${cat}">${svgs[name]}</span> ${name}`;
+        });
 
         function loadState() {
             let savedPresets = localStorage.getItem('core_v1_presets');
             let savedIndex = localStorage.getItem('core_v1_index');
-            if (savedPresets) presets = JSON.parse(savedPresets);
+            if (savedPresets) {
+                let parsed = JSON.parse(savedPresets);
+                parsed.forEach(p => { 
+                    if(!p.params) p.params = [[50,50,50], [50,50,50], [50,50,50], [50,50,50], [50,50,50]]; 
+                    if(!p.bypassed) p.bypassed = [false, false, false, false, false]; // Adds bypass memory to old saves
+                });
+                presets = parsed;
+            }
             if (savedIndex !== null) currentPresetIndex = parseInt(savedIndex);
         }
 
@@ -218,21 +431,72 @@
             localStorage.setItem('core_v1_index', currentPresetIndex);
         }
 
-        const effectDict = {
-            "00": { name: "Empty", icon: "" }, "01": { name: "Amp Sim", icon: "📻" }, "02": { name: "Distortion", icon: "🔥" },
-            "03": { name: "Tremolo", icon: "〰️" }, "04": { name: "Chorus", icon: "🌊" }, "05": { name: "Delay", icon: "🔁" },
-            "06": { name: "Reverb", icon: "⛪" }, "07": { name: "Aco Sim", icon: "🎸" }, "08": { name: "Cab Sim", icon: "🔈" },
-            "09": { name: "Compressor", icon: "🗜️" }, "0A": { name: "Phaser", icon: "🛸" }, "0B": { name: "Flanger", icon: "✈️" },
-            "0C": { name: "AutoWah", icon: "🦆" }, "0D": { name: "Tone EQ", icon: "🎚️" }, "0E": { name: "Noise Gate", icon: "🚪" }
-        };
+        // --- CUSTOM ROTARY KNOB PHYSICS ---
+        let activeKnob = null;
+        
+        function startKnobDrag(e, slotIdx, paramIdx) {
+            if (e.target.tagName.toLowerCase() === 'input') return; 
+            e.preventDefault();
+            let startY = e.clientY || (e.touches && e.touches[0].clientY);
+            activeKnob = { slotIdx, paramIdx, startY, startVal: presets[currentPresetIndex].params[slotIdx][paramIdx] };
+            document.addEventListener('mousemove', dragKnob);
+            document.addEventListener('mouseup', stopKnobDrag);
+            document.addEventListener('touchmove', dragKnob, {passive: false});
+            document.addEventListener('touchend', stopKnobDrag);
+        }
+
+        function dragKnob(e) {
+            if (!activeKnob) return;
+            e.preventDefault();
+            let clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            let delta = activeKnob.startY - clientY;
+            let newVal = Math.max(0, Math.min(100, Math.round(activeKnob.startVal + (delta * 0.8)))); 
+            window.updateParam(activeKnob.slotIdx, activeKnob.paramIdx, newVal);
+        }
+
+        function stopKnobDrag() {
+            activeKnob = null;
+            document.removeEventListener('mousemove', dragKnob);
+            document.removeEventListener('mouseup', stopKnobDrag);
+            document.removeEventListener('touchmove', dragKnob);
+            document.removeEventListener('touchend', stopKnobDrag);
+        }
+
+        window.updateParam = function(slotIdx, paramIdx, value) {
+            let val = parseInt(value) || 0;
+            if (val < 0) val = 0; if (val > 100) val = 100;
+            
+            presets[currentPresetIndex].params[slotIdx][paramIdx] = val;
+            saveState();
+
+            let numInput = document.getElementById(`num_${slotIdx}_${paramIdx}`);
+            let knobOuter = document.getElementById(`knob_${slotIdx}_${paramIdx}`);
+            let indicator = document.getElementById(`indicator_${slotIdx}_${paramIdx}`);
+            
+            if (numInput && document.activeElement !== numInput) numInput.value = val;
+            if (knobOuter && indicator) {
+                let rot = -135 + (val * 2.7);
+                indicator.style.transform = `translateX(-50%) rotate(${rot}deg)`;
+                // Get color based on slot category
+                let cat = effectDict[presets[currentPresetIndex].slots[slotIdx]].cat;
+                let colorVar = `var(--color-${cat})`;
+                knobOuter.style.background = `conic-gradient(from 225deg, ${colorVar} ${val * 2.7}deg, rgba(255,255,255,0.05) ${val * 2.7}deg, rgba(255,255,255,0.05) 270deg, transparent 270deg)`;
+            }
+        }
+
+        window.setKnobTarget = function(globalIdx) {
+            presets[currentPresetIndex].knob = globalIdx;
+            saveState();
+            renderChain();
+        }
 
         let draggedItem = null;
-        let touchSelectedItem = null; 
+        let touchSelectedItem = null;
+        let draggedSlotIndex = null; // NEW: Tracks slot-to-slot dragging 
 
         document.querySelectorAll('.catalog-item').forEach(item => {
             item.addEventListener('dragstart', (e) => { draggedItem = item; });
             item.addEventListener('dragend', () => { draggedItem = null; });
-            
             item.addEventListener('click', () => {
                 document.querySelectorAll('.catalog-item').forEach(i => i.classList.remove('selected'));
                 item.classList.add('selected');
@@ -248,6 +512,16 @@
             document.getElementById('presetNameInput').value = currentData.name;
             document.getElementById('presetLabel').innerText = `PRESET ${currentPresetIndex + 1}`;
             document.getElementById('bgPresetTitle').innerText = currentData.name.toUpperCase();
+            
+            // Aux In Target Button
+            let auxActive = (currentData.knob === 15);
+            let auxStyle = auxActive ? "color: var(--accent-blue); text-shadow: 0 0 8px var(--accent-blue-glow); opacity: 1;" : "color: var(--text-dim); opacity: 0.4;";
+            document.getElementById('auxTargetContainer').innerHTML = `
+                <div style="display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.4); padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border); box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);">
+                    <span style="font-size: 10px; font-weight: 800; color: var(--text-dim); letter-spacing: 1px;">AUX VOL</span>
+                    <span style="cursor:pointer; font-size: 16px; transition: all 0.2s; ${auxStyle}" onclick="setKnobTarget(15)">${targetSvg}</span>
+                </div>
+            `;
 
             for(let i = 0; i < 5; i++) {
                 let hex = currentData.slots[i];
@@ -258,34 +532,119 @@
                 slotWrapper.className = 'slot-wrapper';
                 
                 let slot = document.createElement('div');
-                slot.className = `slot ${isFilled ? 'filled' : ''}`;
+                let isBypassed = currentData.bypassed && currentData.bypassed[i];
+                slot.className = `slot ${isFilled ? 'filled' : ''} ${isFilled ? 'type-' + fx.cat : ''} ${isBypassed ? 'bypassed' : ''}`;
                 slot.dataset.index = i;
                 
                 if (isFilled) {
+                    let knobsHTML = `<div class="param-container">`;
+                    for(let k=0; k<3; k++) {
+                        let label = fx.knobs[k] || "---";
+                        let disabled = label === "---" ? "disabled" : "";
+                        let globalParamIdx = (i * 3) + k;
+                        let val = currentData.params[i][k];
+                        let rot = -135 + (val * 2.7);
+                        let colorVar = `var(--color-${fx.cat})`;
+                        let ringBg = `conic-gradient(from 225deg, ${colorVar} ${val*2.7}deg, rgba(255,255,255,0.05) ${val*2.7}deg, rgba(255,255,255,0.05) 270deg, transparent 270deg)`;
+                        
+                        let isActiveTarget = (currentData.knob === globalParamIdx);
+                        let targetStyle = isActiveTarget ? "color: var(--accent-blue); text-shadow: 0 0 8px var(--accent-blue-glow); opacity: 1;" : "color: var(--text-dim); opacity: 0.3;";
+                        let targetBtn = label !== "---" ? `<span class="target-btn" style="${targetStyle}" onclick="setKnobTarget(${globalParamIdx})">${targetSvg}</span>` : `<span></span>`;
+
+                        knobsHTML += `
+                            <div class="param-row">
+                                <div class="param-info">
+                                    <span class="param-label">${label}</span>
+                                    ${targetBtn}
+                                </div>
+                                <div class="knob-wrapper" onmousedown="${disabled ? '' : `startKnobDrag(event, ${i}, ${k})`}" ontouchstart="${disabled ? '' : `startKnobDrag(event, ${i}, ${k})`}">
+                                    <div class="knob" id="knob_${i}_${k}" style="background: ${ringBg}">
+                                        <div class="knob-inner"></div>
+                                        <div class="knob-indicator" id="indicator_${i}_${k}" style="transform: translateX(-50%) rotate(${rot}deg)"></div>
+                                    </div>
+                                </div>
+                                <input type="number" id="num_${i}_${k}" class="param-number" min="0" max="100" value="${val}" ${disabled} onchange="updateParam(${i}, ${k}, this.value)">
+                            </div>
+                        `;
+                    }
+                    knobsHTML += `</div>`;
+
                     slot.innerHTML = `
+                        <div class="bypass-btn" onclick="toggleBypass(event, ${i})" style="color: ${isBypassed ? 'var(--accent-red)' : 'var(--text-dim)'}">⏻</div>
                         <div class="remove-btn" onclick="clearSlot(event, ${i})">✕</div>
-                        <div class="slot-icon">${fx.icon}</div>
+                        <div class="slot-icon icon-${fx.cat}">${svgs[fx.name]}</div>
                         <div class="slot-name">${fx.name}</div>
+                        ${knobsHTML}
                     `;
                 } else {
                     slot.innerHTML = `<div class="empty-text">Drop Effect<br>Here</div>`;
                 }
+                // Make the slot draggable, but disable dragging if clicking a knob or input
+                slot.draggable = true;
+                slot.addEventListener('dragstart', (e) => {
+                    if (e.target.tagName.toLowerCase() === 'input' || e.target.tagName.toLowerCase() === 'span' || e.target.tagName.toLowerCase() === 'svg' || e.target.closest('.knob-wrapper')) {
+                        e.preventDefault();
+                        return;
+                    }
+                    draggedSlotIndex = i;
+                });
+                slot.addEventListener('dragend', () => { draggedSlotIndex = null; });
+
+                // Make slot draggable for swapping
+                slot.draggable = isFilled;
+                slot.addEventListener('dragstart', (e) => {
+                    if (e.target.tagName.toLowerCase() === 'input' || e.target.closest('.knob-wrapper') || e.target.closest('.bypass-btn')) {
+                        e.preventDefault(); return;
+                    }
+                    window.draggedSlotIndex = i;
+                });
+                slot.addEventListener('dragend', () => { window.draggedSlotIndex = null; });
 
                 slot.addEventListener('dragover', (e) => { e.preventDefault(); slot.classList.add('drag-over'); });
                 slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
                 slot.addEventListener('drop', (e) => {
                     e.preventDefault();
                     slot.classList.remove('drag-over');
+                    
                     if (draggedItem) {
+                        // Drop from Catalog (Sidebar)
                         presets[currentPresetIndex].slots[i] = draggedItem.dataset.hex;
-                        saveState();
-                        renderChain();
+                        presets[currentPresetIndex].params[i] = [50, 50, 50]; 
+                        presets[currentPresetIndex].bypassed[i] = false;
+                        // If the Target Knob was on one of these slots, mathematically swap its assignment too!
+                        let targetGlobalIdx = presets[currentPresetIndex].knob;
+                        let movingSlotTarget = (targetGlobalIdx >= window.draggedSlotIndex * 3 && targetGlobalIdx < window.draggedSlotIndex * 3 + 3);
+                        let destSlotTarget = (targetGlobalIdx >= i * 3 && targetGlobalIdx < i * 3 + 3);
+
+                        if (movingSlotTarget) {
+                            presets[currentPresetIndex].knob = (targetGlobalIdx - window.draggedSlotIndex * 3) + (i * 3);
+                        } else if (destSlotTarget) {
+                            presets[currentPresetIndex].knob = (targetGlobalIdx - i * 3) + (window.draggedSlotIndex * 3);
+                        }
+                        saveState(); renderChain();
+                    } else if (window.draggedSlotIndex !== null && window.draggedSlotIndex !== i) {
+                        // Swap two active slots!
+                        let tempSlot = presets[currentPresetIndex].slots[i];
+                        let tempParams = [...presets[currentPresetIndex].params[i]];
+                        let tempBypass = presets[currentPresetIndex].bypassed[i];
+
+                        presets[currentPresetIndex].slots[i] = presets[currentPresetIndex].slots[window.draggedSlotIndex];
+                        presets[currentPresetIndex].params[i] = [...presets[currentPresetIndex].params[window.draggedSlotIndex]];
+                        presets[currentPresetIndex].bypassed[i] = presets[currentPresetIndex].bypassed[window.draggedSlotIndex];
+
+                        presets[currentPresetIndex].slots[window.draggedSlotIndex] = tempSlot;
+                        presets[currentPresetIndex].params[window.draggedSlotIndex] = tempParams;
+                        presets[currentPresetIndex].bypassed[window.draggedSlotIndex] = tempBypass;
+
+                        saveState(); renderChain();
                     }
                 });
 
-                slot.addEventListener('click', () => {
+                slot.addEventListener('click', (e) => {
+                    if (e.target.tagName.toLowerCase() === 'input' || e.target.tagName.toLowerCase() === 'span' || e.target.closest('.knob-wrapper')) return; 
                     if (touchSelectedItem) {
                         presets[currentPresetIndex].slots[i] = touchSelectedItem.dataset.hex;
+                        presets[currentPresetIndex].params[i] = [50, 50, 50];
                         touchSelectedItem.classList.remove('selected');
                         touchSelectedItem = null;
                         saveState();
@@ -293,24 +652,17 @@
                     }
                 });
 
-                let knobBtn = document.createElement('div');
-                knobBtn.className = `knob-target ${currentData.knob === i ? 'active' : ''}`;
-                knobBtn.innerHTML = `<span style="font-size:14px">🎛️</span> Target`;
-                knobBtn.onclick = () => { 
-                    presets[currentPresetIndex].knob = i; 
-                    saveState();
-                    renderChain(); 
-                };
-
                 slotWrapper.appendChild(slot);
-                slotWrapper.appendChild(knobBtn);
                 container.appendChild(slotWrapper);
 
                 if (i < 4) {
-                    let arrow = document.createElement('div');
-                    arrow.className = 'arrow';
-                    arrow.innerHTML = '➞';
-                    container.appendChild(arrow);
+                    let isWireActive = (currentData.slots[i] !== "00" && currentData.slots[i+1] !== "00");
+                    let wireColor = isWireActive ? `var(--color-${effectDict[currentData.slots[i]].cat})` : 'rgba(255,255,255,0.05)';
+                    let wireStyle = isWireActive ? `background: ${wireColor}; box-shadow: 0 0 12px ${wireColor};` : '';
+                    let wire = document.createElement('div');
+                    wire.className = `signal-wire ${isWireActive ? 'active' : ''}`;
+                    if(isWireActive) wire.setAttribute('style', wireStyle);
+                    container.appendChild(wire);
                 }
             }
         }
@@ -318,6 +670,7 @@
         function clearSlot(event, index) {
             event.stopPropagation(); 
             presets[currentPresetIndex].slots[index] = "00";
+            presets[currentPresetIndex].params[index] = [50, 50, 50];
             saveState();
             renderChain();
         }
@@ -331,28 +684,89 @@
             renderChain();
         }
 
-        async function connectBluetooth() {
+        // --- BLUETOOTH WATCHDOG & TOGGLE ---
+        function handleDisconnect() {
+            bleCharacteristic = null;
+            connectedDevice = null;
+            document.getElementById('statusText').innerText = "Disconnected";
+            document.getElementById('statusText').style.color = "var(--text-dim)";
+            document.getElementById('statusDot').style.backgroundColor = "#ef4444";
+            document.getElementById('statusDot').style.boxShadow = "0 0 8px #ef4444";
+            
+            let cBtn = document.getElementById('connectBtn');
+            cBtn.innerText = "Pair Device";
+            document.getElementById('uploadBtn').disabled = true;
+        }
+
+        async function toggleConnection() {
+            if (connectedDevice && connectedDevice.gatt.connected) {
+                connectedDevice.gatt.disconnect();
+                return; // handleDisconnect() will fire automatically
+            }
+
             try {
-                const device = await navigator.bluetooth.requestDevice({
+                connectedDevice = await navigator.bluetooth.requestDevice({
                     filters: [{ namePrefix: 'CORE' }], 
                     optionalServices: [SERVICE_UUID]
                 });
-                const server = await device.gatt.connect();
+                
+                connectedDevice.addEventListener('gattserverdisconnected', handleDisconnect);
+                
+                const server = await connectedDevice.gatt.connect();
                 const service = await server.getPrimaryService(SERVICE_UUID);
                 bleCharacteristic = await service.getCharacteristic(TX_UUID);
 
-                document.getElementById('statusText').innerText = "Connected to " + device.name;
-                document.getElementById('statusText').style.color = "#10b981";
-                document.getElementById('statusDot').style.backgroundColor = "#10b981";
+                document.getElementById('statusText').innerText = "Connected to " + connectedDevice.name;
+                document.getElementById('statusText').style.color = "var(--accent-green)";
+                document.getElementById('statusDot').style.backgroundColor = "var(--accent-green)";
+                document.getElementById('statusDot').style.boxShadow = "0 0 10px var(--accent-green)";
                 
-                let cBtn = document.getElementById('connectBtn');
-                cBtn.innerText = "Disconnect";
-                cBtn.style.backgroundColor = "transparent";
-                cBtn.style.borderColor = "#3f3f46";
-                
+                document.getElementById('connectBtn').innerText = "Disconnect";
                 document.getElementById('uploadBtn').disabled = false;
             } catch (error) {
-                alert("Connection failed. Ensure the guitar is powered on, and you are using Bluefy or Chrome.");
+                alert("Connection failed. Ensure the guitar is powered on.");
+            }
+        }
+
+        // --- MUTE & UNMUTE FIX (No "UPDATED" screen) ---
+        async function toggleMute() {
+            isMuted = !isMuted;
+            let btn = document.getElementById('muteBtn');
+            if (isMuted) {
+                btn.classList.add('muted');
+                btn.innerText = "🔇 Muted";
+                if (!bleCharacteristic) return;
+                
+                let z = [0xF0, 0x03, currentPresetIndex, 0,0,0, 0,0,0, 0,0,0, 0xF7];
+                let z2 = [0xF0, 0x04, currentPresetIndex, 0,0,0, 0,0,0, 0xF7];
+                try {
+                    await bleCharacteristic.writeValue(new Uint8Array(z));
+                    await new Promise(r => setTimeout(r, 50));
+                    await bleCharacteristic.writeValue(new Uint8Array(z2));
+                } catch(e) {}
+            } else {
+                btn.classList.remove('muted');
+                btn.innerText = "⏻ Mute";
+                if (!bleCharacteristic) return;
+                
+                // UNMUTE: Send ONLY slider values. Skips Name Payload so OLED does not flash "UPDATED".
+                let pData = presets[currentPresetIndex];
+                let getMidi = (val) => Math.round((val / 100) * 127);
+
+                let p1Payload = [0xF0, 0x03, currentPresetIndex,
+                                 getMidi(pData.params[0][0]), getMidi(pData.params[0][1]), getMidi(pData.params[0][2]),
+                                 getMidi(pData.params[1][0]), getMidi(pData.params[1][1]), getMidi(pData.params[1][2]),
+                                 getMidi(pData.params[2][0]), getMidi(pData.params[2][1]), getMidi(pData.params[2][2]), 0xF7];
+                                 
+                let p2Payload = [0xF0, 0x04, currentPresetIndex,
+                                 getMidi(pData.params[3][0]), getMidi(pData.params[3][1]), getMidi(pData.params[3][2]),
+                                 getMidi(pData.params[4][0]), getMidi(pData.params[4][1]), getMidi(pData.params[4][2]), 0xF7];
+
+                try {
+                    await bleCharacteristic.writeValue(new Uint8Array(p1Payload));
+                    await new Promise(r => setTimeout(r, 50));
+                    await bleCharacteristic.writeValue(new Uint8Array(p2Payload));
+                } catch(e) {}
             }
         }
 
@@ -366,11 +780,25 @@
 
             let pData = presets[currentPresetIndex];
             
-            let fxPayload = [0xF0, 0x01, currentPresetIndex, 
-                             parseInt(pData.slots[0], 16), parseInt(pData.slots[1], 16), 
-                             parseInt(pData.slots[2], 16), parseInt(pData.slots[3], 16), 
-                             parseInt(pData.slots[4], 16), pData.knob, 0xF7];
+            // If bypassed, send 0 (Empty) to the C++, otherwise send the real hex!
+            let getHex = (idx) => pData.bypassed[idx] ? 0 : parseInt(pData.slots[idx], 16);
             
+            let basePayload = [0xF0, 0x01, currentPresetIndex, 
+                               getHex(0), getHex(1), getHex(2), getHex(3), getHex(4), 
+                               pData.knob, 0xF7];
+            
+            let getMidi = (val) => Math.round((val / 100) * 127);
+
+            let p1Payload = [0xF0, 0x03, currentPresetIndex,
+                             getMidi(pData.params[0][0]), getMidi(pData.params[0][1]), getMidi(pData.params[0][2]),
+                             getMidi(pData.params[1][0]), getMidi(pData.params[1][1]), getMidi(pData.params[1][2]),
+                             getMidi(pData.params[2][0]), getMidi(pData.params[2][1]), getMidi(pData.params[2][2]), 0xF7];
+                             
+            let p2Payload = [0xF0, 0x04, currentPresetIndex,
+                             getMidi(pData.params[3][0]), getMidi(pData.params[3][1]), getMidi(pData.params[3][2]),
+                             getMidi(pData.params[4][0]), getMidi(pData.params[4][1]), getMidi(pData.params[4][2]), 0xF7];
+
+            // Sending this 4th chunk is what triggers the memory save & "UPDATED" screen
             let namePayload = [0xF0, 0x02, currentPresetIndex];
             for (let i = 0; i < pData.name.length && i < 11; i++) {
                 namePayload.push(pData.name.charCodeAt(i));
@@ -378,16 +806,49 @@
             namePayload.push(0xF7);
 
             try {
-                await bleCharacteristic.writeValue(new Uint8Array(fxPayload));
-                setTimeout(async () => {
-                    await bleCharacteristic.writeValue(new Uint8Array(namePayload));
-                    btn.innerText = "✅ Uploaded";
-                    setTimeout(() => { btn.innerText = "Upload to Guitar"; btn.disabled = false; }, 2000);
-                }, 150);
+                await bleCharacteristic.writeValue(new Uint8Array(basePayload));
+                await new Promise(r => setTimeout(r, 50));
+                
+                await bleCharacteristic.writeValue(new Uint8Array(p1Payload));
+                await new Promise(r => setTimeout(r, 50));
+                
+                await bleCharacteristic.writeValue(new Uint8Array(p2Payload));
+                await new Promise(r => setTimeout(r, 50));
+                
+                await bleCharacteristic.writeValue(new Uint8Array(namePayload));
+                
+                btn.innerText = "✅ Uploaded";
+                setTimeout(() => { btn.innerText = "Upload to Guitar"; btn.disabled = false; }, 2000);
             } catch (error) {
                 btn.innerText = "❌ Failed";
                 setTimeout(() => { btn.innerText = "Upload to Guitar"; btn.disabled = false; }, 2000);
             }
+        }
+        // --- THEME TOGGLE LOGIC ---
+        function toggleTheme() {
+            let body = document.body;
+            let btn = document.getElementById('themeBtn');
+            body.classList.toggle('light-mode');
+            
+            if (body.classList.contains('light-mode')) {
+                btn.innerText = "🌙 Dark";
+                localStorage.setItem('core_theme', 'light');
+            } else {
+                btn.innerText = "☀️ Light";
+                localStorage.setItem('core_theme', 'dark');
+            }
+        }
+
+        // Auto-load saved theme on boot
+        if (localStorage.getItem('core_theme') === 'light') {
+            toggleTheme(); 
+        }
+        window.toggleBypass = function(event, slotIdx) {
+            event.stopPropagation();
+            presets[currentPresetIndex].bypassed[slotIdx] = !presets[currentPresetIndex].bypassed[slotIdx];
+            saveState();
+            renderChain();
+            if (bleCharacteristic) uploadToGuitar(); // Instantly update the guitar
         }
 
         loadState();
