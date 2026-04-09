@@ -268,13 +268,47 @@
 
         .footer-hint { margin-top: 20px; color: var(--text-dim); font-size: 12px; font-weight: 600; text-align: center; padding: 0 20px 20px 20px; letter-spacing: 1px; }
 
+        /* --- FOUNDER CREDIT --- */
+        .founder-credit {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 10px;
+            color: var(--text-dim);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .founder-credit a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .founder-credit a:hover {
+            color: var(--text-main);
+            text-shadow: 0 0 10px var(--accent-blue-glow);
+        }
+        
         /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 900px) {
             body { height: auto; min-height: 100vh; overflow-y: auto; }
             header { flex-direction: column; gap: 15px; padding: 15px; }
             .nav-left, .nav-center, .nav-right { width: 100%; justify-content: center; text-align: center; }
             .nav-left { flex-direction: column; gap: 10px; }
-            .nav-right { flex-direction: row; justify-content: center; }
+            .nav-right { 
+                display: grid; 
+                grid-template-columns: 1fr 1fr; 
+                gap: 10px; 
+            }
+            .nav-right button {
+                width: 100%;
+                padding: 12px 5px;
+                font-size: 11px; /* Slightly smaller font so "Upload to Guitar" fits perfectly */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
             main { flex-direction: column; overflow-y: visible; }
             aside { width: 100%; order: 2; border-right: none; border-top: 1px solid var(--border); padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; box-sizing: border-box; }
             aside h3 { grid-column: 1 / -1; margin-top: 15px; margin-bottom: 5px; }
@@ -285,6 +319,7 @@
             .slot { width: 140px; height: 260px; padding-top: 15px; }
             .signal-wire { display: none; }
             .remove-btn { opacity: 1; transform: scale(1); top: -5px; right: -5px; }
+            .founder-credit { grid-column: 1 / -1; margin-top: 15px; }
         }
         /* --- BYPASS FEATURE CSS --- */
         .bypass-btn { position: absolute; top: 12px; left: 12px; cursor: pointer; font-size: 14px; z-index: 5; transition: all 0.2s; }
@@ -350,6 +385,9 @@
             <div class="catalog-item" draggable="true" data-hex="05" data-name="Delay" data-cat="time"></div>
             <div class="catalog-item" draggable="true" data-hex="06" data-name="Reverb" data-cat="time"></div>
             <div class="catalog-item" draggable="true" data-hex="0F" data-name="Octaver" data-cat="time"></div>
+            <div class="founder-credit">
+                Engineered by <a href="https://www.linkedin.com/in/justindallen2025" target="_blank">Justin Allen</a>
+            </div>
         </aside>
     </main>
 
