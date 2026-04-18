@@ -81,7 +81,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 70px;
+            height: 80px; /* Slightly taller nav to fit the bigger logo */
             padding: 0 5%;
             z-index: 1000;
             display: flex;
@@ -90,13 +90,9 @@
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 900;
-            letter-spacing: 0.1em;
-            color: var(--text-primary);
-            text-decoration: none;
             display: flex;
             align-items: center;
+            text-decoration: none;
         }
 
         .nav-actions {
@@ -243,7 +239,7 @@
             min-width: 300px;
         }
 
-        /* --- Image/Iframe Placeholders --- */
+        /* --- Image Placeholders --- */
         .visual-placeholder {
             flex: 1;
             min-width: 300px;
@@ -258,19 +254,32 @@
             justify-content: center;
         }
 
+        /* Changed object-fit to 'contain' so your transparent images aren't cropped */
         .visual-placeholder img {
             width: 100%;
             height: 100%;
-            object-fit: cover; 
+            object-fit: contain; 
+            padding: 20px;
             transition: transform 0.5s ease;
         }
 
         .visual-placeholder:hover img {
             transform: scale(1.03); 
         }
+
+        /* --- 3D CAD Iframe Styling --- */
+        .cad-container {
+            width: 100%;
+            height: 60vh;
+            min-height: 450px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            margin-top: 40px;
+        }
         
-        /* Iframe styling for Fusion 360 */
-        .visual-placeholder iframe {
+        .cad-container iframe {
             width: 100%;
             height: 100%;
             border: none;
@@ -355,17 +364,13 @@
                 text-align: center;
                 gap: 40px;
             }
-            .body-text {
-                margin: 0 auto; 
-            }
-            .visual-placeholder {
-                width: 100%; 
-                height: 350px; /* Adjusted height slightly for mobile 3D viewing */
-            }
+            .body-text { margin: 0 auto; }
+            .visual-placeholder { width: 100%; height: 350px; }
+            .cad-container { height: 400px; }
         }
 
         @media (max-width: 768px) {
-            nav { padding: 1rem 5%; }
+            nav { padding: 1rem 5%; height: 70px; }
             .nav-link { display: none; } 
             section { padding: 4rem 5%; }
             .hero-btns { flex-direction: column; width: 100%; }
@@ -380,7 +385,7 @@
         <div class="ambient-orb orb-2"></div>
 
         <nav class="glass">
-            <a href="/" class="logo"><img src="/CORE.png" alt="CORE" style="height: 32px;"></a>
+            <a href="/" class="logo"><img src="/CORE.png" alt="CORE" style="height: 48px;"></a>
             <div class="nav-actions">
                 <a href="/app" class="nav-link">Enter Web App</a>
                 <a href="https://forms.gle/FPhgCCo9by2XEEeY9" class="btn-survey" target="_blank">Take Survey</a>
@@ -393,7 +398,7 @@
                 <p>Studio tone. Untethered freedom.</p>
                 <div class="hero-btns">
                     <a href="https://forms.gle/FPhgCCo9by2XEEeY9" class="btn-primary" target="_blank">Help Us Build It</a>
-                    <a href="#tech" class="btn-outline">See the Tech</a>
+                    <a href="#solution" class="btn-outline">See the Tech</a>
                 </div>
             </div>
         </header>
@@ -407,7 +412,7 @@
                     </p>
                 </div>
                 <div class="visual-placeholder" data-aos="zoom-in" data-aos-duration="1200">
-                    <img src="/your-image-1.jpg" alt="CORE Prototype playing silently" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'color:#666; font-size:14px;\'>Add your-image-1.jpg here</span>'">
+                    <img src="/guitar%20without%20background.png" alt="CORE Prototype playing silently">
                 </div>
             </div>
         </section>
@@ -421,6 +426,18 @@
                     </p>
                 </div>
                 <div class="visual-placeholder" data-aos="zoom-in" data-aos-duration="1200">
+                    <img src="/electronics%20without%20background.png" alt="CORE Web UI and Hardware">
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture">
+            <div style="text-align: center;" data-aos="fade-up" data-aos-duration="1000">
+                <h2>Explore the Architecture</h2>
+                <p class="body-text" style="margin: 0 auto;">
+                    Interact directly with the CORE pickguard assembly.
+                </p>
+                <div class="cad-container">
                     <iframe src="https://gatech7484.autodesk360.com/shares/public/SH90d2dQT28d5b602811c02b0162ec05e2c3?mode=embed" width="100%" height="100%" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" frameborder="0"></iframe>
                 </div>
             </div>
