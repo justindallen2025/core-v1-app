@@ -33,6 +33,7 @@
         }
 
         /* --- Fluid Animated Background --- */
+        /* FIX: overflow-x moved here so AOS can calculate scroll depth accurately */
         body {
             background: linear-gradient(-45deg, #050508, #0a1128, #160524, #050508);
             background-size: 400% 400%;
@@ -41,6 +42,7 @@
             font-family: var(--font-main);
             line-height: 1.5;
             scroll-behavior: smooth;
+            overflow-x: hidden; 
         }
 
         @keyframes gradientBG {
@@ -50,8 +52,8 @@
         }
 
         .page-wrapper {
-            overflow-x: hidden;
             position: relative;
+            width: 100%;
         }
 
         /* --- Floating Ambient Orbs --- */
@@ -81,7 +83,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 80px; /* Slightly taller nav to fit the bigger logo */
+            height: 80px; 
             padding: 0 5%;
             z-index: 1000;
             display: flex;
@@ -254,7 +256,6 @@
             justify-content: center;
         }
 
-        /* Changed object-fit to 'contain' so your transparent images aren't cropped */
         .visual-placeholder img {
             width: 100%;
             height: 100%;
@@ -277,6 +278,7 @@
             border: 1px solid var(--glass-border);
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             margin-top: 40px;
+            background: #000;
         }
         
         .cad-container iframe {
@@ -395,7 +397,7 @@
         <header class="hero">
             <div data-aos="fade-up" data-aos-duration="1200">
                 <h1>The Software-Defined Guitar</h1>
-                <p>Studio tone. Untethered freedom.</p>
+                <p>Studio-grade tone. Zero setup friction. Acoustic-like freedom.</p>
                 <div class="hero-btns">
                     <a href="https://forms.gle/FPhgCCo9by2XEEeY9" class="btn-primary" target="_blank">Help Us Build It</a>
                     <a href="#solution" class="btn-outline">See the Tech</a>
@@ -406,13 +408,13 @@
         <section id="solution">
             <div class="flex-section">
                 <div class="flex-content" data-aos="fade-right" data-aos-duration="1000">
-                    <h2>Grab-and-Go<br>Just like an acoustic</h2>
+                    <h2>The Death of<br>Setup Friction.</h2>
                     <p class="body-text">
-                        64% of guitarists practice unplugged because setting up an amp and interface takes too much time. We embedded a 480MHz studio-grade supercomputer directly into your pickguard. Pick it up, plug in your headphones, and get your full rig sound instantly.
+                        If you're like 64% of guitarists, you practice unplugged because wrestling with pedalboards, power supplies, and audio interfaces kills your motivation. We fixed that. CORE embeds a massive 480MHz studio-grade supercomputer directly into your pickguard. Just pick up your guitar, plug in your headphones, and your stadium rig is instantly in your ears. No amps. No dongles. Just play.
                     </p>
                 </div>
-                <div class="visual-placeholder" data-aos="zoom-in" data-aos-duration="1200">
-                    <img src="/image_1.png" alt="CORE Prototype playing silently">
+                <div class="visual-placeholder" data-aos="zoom-in" data-aos-duration="1200" data-aos-delay="200">
+                    <img src="/guitar%20without%20background.png" alt="CORE Prototype playing silently">
                 </div>
             </div>
         </section>
@@ -420,35 +422,35 @@
         <section id="tech">
             <div class="flex-section" style="flex-direction: row-reverse;">
                 <div class="flex-content" data-aos="fade-left" data-aos-duration="1000">
-                    <h2>Solderless Setup<br>Total Control</h2>
+                    <h2>Solderless Drop-In.<br>Wireless Control.</h2>
                     <p class="body-text">
-                        Upgrade your Stratocaster in minutes with our solderless integration hub. Dial in your tone on your iPad with sub-12ms Bluetooth Low Energy latency, save the preset to the guitar, and walk on stage.
+                        Upgrading your Stratocaster shouldn't require a soldering iron. Our drop-in hub uses mechanical screw-terminals to securely integrate your existing analog pickups. Once installed, route your entire signal chain via Bluetooth Low Energy (BLE) with sub-12ms latency using our Web App. Save the exact preset to the guitar's onboard memory, and leave the screen behind.
                     </p>
                 </div>
-                <div class="visual-placeholder" data-aos="zoom-in" data-aos-duration="1200">
-                    <img src="/image_2.png" alt="CORE Web UI and Hardware">
+                <div class="visual-placeholder" data-aos="zoom-in" data-aos-duration="1200" data-aos-delay="200">
+                    <img src="/electronics%20without%20background.png" alt="CORE Web UI and Hardware">
                 </div>
             </div>
         </section>
 
         <section id="architecture">
             <div style="text-align: center;" data-aos="fade-up" data-aos-duration="1000">
-                <h2>Explore the Architecture</h2>
+                <h2>Under the Hood.</h2>
                 <p class="body-text" style="margin: 0 auto;">
-                    Interact directly with the CORE pickguard assembly.
+                    Interact with the mechanical layout of the CORE MVP. We managed to fit an ARM Cortex-M7, a mechanical true-bypass relay, and a rechargeable power array into a standard cavity without routing a single millimeter of wood.
                 </p>
-                <div class="cad-container">
+                <div class="cad-container" data-aos="zoom-in" data-aos-duration="1200" data-aos-delay="200">
                     <iframe src="https://gatech7484.autodesk360.com/shares/public/SH90d2dQT28d5b602811c02b0162ec05e2c3?mode=embed" width="100%" height="100%" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" frameborder="0"></iframe>
                 </div>
             </div>
         </section>
 
         <section id="survey">
-            <div class="cta-box" data-aos="fade-up" data-aos-duration="1000">
+            <div class="cta-box" data-aos="zoom-in" data-aos-duration="1000">
                 <span class="kicker">PATENT PENDING | BUILT AT GEORGIA TECH</span>
-                <h2>Shape the Future of Tone</h2>
+                <h2>Join the Priority Waitlist.</h2>
                 <p class="body-text" style="margin: 0 auto 10px auto;">
-                    We are building the next generation of music tech, and we need your input. Join our priority waitlist and help us validate our roadmap.
+                    We are preparing for our Phase 1 hardware manufacturing run. We need 10-15 dedicated beta testers to help validate our DSP algorithms before public launch. Drop your email in the survey to get on the shortlist.
                 </p>
                 <a href="https://forms.gle/FPhgCCo9by2XEEeY9" class="btn-large-glowing" target="_blank">Take the 60-Second Survey</a>
             </div>
@@ -466,10 +468,16 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({
-            once: true, 
-            mirror: false,
-            offset: 50 
+        // Ensure AOS refreshes calculations once images and iframes fully load
+        window.addEventListener('load', function() {
+            AOS.init({
+                once: true, 
+                mirror: false,
+                offset: 50,
+                duration: 800,
+            });
+            // Force a refresh immediately after init just to be safe
+            setTimeout(() => AOS.refresh(), 100);
         });
 
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
