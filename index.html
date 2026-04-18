@@ -85,7 +85,7 @@
             padding: 0 5%;
             z-index: 1000;
             display: flex;
-            justify-content: space-between; /* Keeps logo left, buttons right */
+            justify-content: space-between; 
             align-items: center;
         }
 
@@ -213,7 +213,7 @@
             max-width: 1400px;
             margin: 0 auto;
             position: relative;
-            scroll-margin-top: 80px; /* Prevents sticky nav from covering the title */
+            scroll-margin-top: 80px; 
         }
 
         h2 {
@@ -243,13 +243,13 @@
             min-width: 300px;
         }
 
-        /* --- Image Placeholders --- */
+        /* --- Image/Iframe Placeholders --- */
         .visual-placeholder {
             flex: 1;
             min-width: 300px;
             height: 400px;
             border-radius: 16px;
-            overflow: hidden; /* Keeps images inside the rounded corners */
+            overflow: hidden; 
             border: 1px solid var(--glass-border);
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
             background: rgba(255,255,255,0.02);
@@ -261,12 +261,19 @@
         .visual-placeholder img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ensures the image fills the box perfectly */
+            object-fit: cover; 
             transition: transform 0.5s ease;
         }
 
         .visual-placeholder:hover img {
-            transform: scale(1.03); /* Slight zoom effect on hover */
+            transform: scale(1.03); 
+        }
+        
+        /* Iframe styling for Fusion 360 */
+        .visual-placeholder iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         /* --- CTA Section --- */
@@ -344,22 +351,22 @@
         /* --- Mobile/iPad Responsiveness --- */
         @media (max-width: 1024px) {
             .flex-section {
-                flex-direction: column !important; /* Stacks image under text on iPads/Phones */
+                flex-direction: column !important; 
                 text-align: center;
                 gap: 40px;
             }
             .body-text {
-                margin: 0 auto; /* Centers text on mobile */
+                margin: 0 auto; 
             }
             .visual-placeholder {
-                width: 100%; /* Image takes full width on mobile */
-                height: 300px;
+                width: 100%; 
+                height: 350px; /* Adjusted height slightly for mobile 3D viewing */
             }
         }
 
         @media (max-width: 768px) {
             nav { padding: 1rem 5%; }
-            .nav-link { display: none; } /* Hides "Enter Web App" text, keeps survey button */
+            .nav-link { display: none; } 
             section { padding: 4rem 5%; }
             .hero-btns { flex-direction: column; width: 100%; }
             .btn-primary, .btn-outline { width: 100%; text-align: center; }
@@ -373,7 +380,7 @@
         <div class="ambient-orb orb-2"></div>
 
         <nav class="glass">
-            <a href="/" class="logo">CORE.</a>
+            <a href="/" class="logo"><img src="/CORE.png" alt="CORE" style="height: 32px;"></a>
             <div class="nav-actions">
                 <a href="/app" class="nav-link">Enter Web App</a>
                 <a href="https://forms.gle/FPhgCCo9by2XEEeY9" class="btn-survey" target="_blank">Take Survey</a>
@@ -414,7 +421,7 @@
                     </p>
                 </div>
                 <div class="visual-placeholder" data-aos="zoom-in" data-aos-duration="1200">
-                    <img src="/your-image-2.jpg" alt="CORE Web UI and Hardware" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'color:#666; font-size:14px;\'>Add your-image-2.jpg here</span>'">
+                    <iframe src="https://gatech7484.autodesk360.com/shares/public/SH90d2dQT28d5b602811c02b0162ec05e2c3?mode=embed" width="100%" height="100%" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" frameborder="0"></iframe>
                 </div>
             </div>
         </section>
@@ -442,14 +449,12 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Initialize AOS
         AOS.init({
             once: true, 
             mirror: false,
             offset: 50 
         });
 
-        // Smooth scroll handler
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
