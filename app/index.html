@@ -6,6 +6,9 @@
     <title>CORE Studio</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="apple-touch-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <meta property="og:title" content="CORE Studio">
     <meta property="og:description" content="Software-Defined Guitar Hardware. Build your rig, connect via Bluetooth, and play.">
     <meta property="og:image" content="https://coremusictech.com/preview.png">
@@ -31,64 +34,6 @@
             --border: rgba(255, 255, 255, 0.08);
             --glass-blur: blur(16px);
         }
-        /* --- LIGHT MODE OVERRIDES --- */
-        body.light-mode {
-            background: var(--bg-deep); /* THIS OVERRIDES THE DARK GRADIENT */
-            --bg-deep: #f1f5f9;
-            --bg-panel: rgba(255, 255, 255, 0.75);
-            --bg-card: rgba(248, 250, 252, 0.8);
-            --text-main: #0f172a;
-            --text-dim: #64748b;
-            --border: rgba(0, 0, 0, 0.1);
-            --accent-blue: #0284c7; /* Darker blue for contrast on light backgrounds */
-            --accent-blue-glow: rgba(2, 132, 199, 0.3);
-        }
-
-        /* Ultra-Clean Light Mode Background */
-        body.light-mode::before {
-            background: radial-gradient(circle at 50% -20%, #ffffff 0%, transparent 100%),
-                        radial-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 18px 18px;
-        }
-
-        /* Make pedals look like white frosted glass */
-        body.light-mode .slot.filled {
-            background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(241,245,249,0.95) 100%);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,1);
-        }
-
-        /* Make the rotary knobs silver/light gray */
-        body.light-mode .knob-inner {
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            box-shadow: inset 0 -1px 2px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.1);
-        }
-        body.light-mode .knob-indicator { background: var(--accent-blue); }
-        
-        /* Auto-invert the white CORE logo to dark slate so you can see it */
-        body.light-mode .brand-container img {
-            filter: invert(1) brightness(0.2);
-        }
-        /* 1. Fix the giant background text watermark */
-        body.light-mode .preset-title-display {
-            color: rgba(0, 0, 0, 0.04);
-        }
-
-        /* 2. Fix the empty slots and "Drop Effect Here" text */
-        body.light-mode .slot:not(.filled) {
-            border-color: rgba(0, 0, 0, 0.15);
-            background: rgba(0, 0, 0, 0.02);
-        }
-        body.light-mode .empty-text {
-            color: rgba(0, 0, 0, 0.3);
-        }
-
-        /* 3. Fix the inactive/empty signal wires */
-        body.light-mode .signal-wire:not(.active) {
-            background: rgba(0, 0, 0, 0.1);
-        }
-        body.light-mode .signal-wire:not(.active)::after {
-            border-left-color: rgba(0, 0, 0, 0.1);
-        }
 
         body { 
             margin: 0; 
@@ -103,44 +48,80 @@
             background: var(--bg-panel); 
             backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
             border-bottom: 1px solid var(--border); 
-            padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; 
+            padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; 
             box-shadow: 0 10px 40px rgba(0,0,0,0.8); z-index: 10; flex-shrink: 0; 
         }
+        
         .nav-left { display: flex; align-items: center; gap: 20px; width: 320px; }
         .nav-center { display: flex; align-items: center; gap: 15px; flex-grow: 1; justify-content: center; }
-        .nav-right { width: 320px; display: flex; justify-content: flex-end; gap: 10px; }
+        .nav-right { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
         
-        .brand-container { display: flex; align-items: center; gap: 12px; }
-        .brand-container img { height: 28px; filter: drop-shadow(0 0 8px rgba(255,200,100,0.3)); }
-        .brand-text { font-size: 16px; font-weight: 800; letter-spacing: 3px; color: var(--text-main); margin: 0; text-transform: uppercase; }
-        
-        button { 
-            background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border); 
-            padding: 10px 20px; font-size: 13px; border-radius: 6px; cursor: pointer; 
-            font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+        /* Slick Home Button */
+        .home-btn {
+            color: var(--text-dim);
+            font-size: 16px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid transparent;
         }
-        button:hover { background: rgba(255,255,255,0.1); }
-        button:active { transform: scale(0.96); }
-        button:disabled { opacity: 0.4; cursor: not-allowed; }
-        
-        #connectBtn { background: transparent; border-color: var(--accent-blue); color: var(--accent-blue); }
-        #connectBtn:hover { background: rgba(0, 229, 255, 0.1); box-shadow: 0 0 15px var(--accent-blue-glow); }
-        
-        #uploadBtn { background: var(--accent-blue); border-color: var(--accent-blue); color: #000; }
-        #uploadBtn:hover:not(:disabled) { background: #00ffff; box-shadow: 0 0 20px var(--accent-blue-glow); }
+        .home-btn:hover {
+            color: var(--text-main);
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--border);
+        }
 
-        #muteBtn { background: transparent; border-color: var(--accent-red); color: var(--accent-red); }
-        #muteBtn:hover { background: rgba(255, 42, 64, 0.1); box-shadow: 0 0 15px var(--accent-red-glow); }
-        #muteBtn.muted { background: var(--accent-red); color: #fff; box-shadow: 0 0 20px var(--accent-red-glow); }
+        .brand-container { display: flex; align-items: center; }
+        .brand-container img { height: 32px; filter: drop-shadow(0 0 8px rgba(255,200,100,0.3)); }
+        
+        /* Stealth Buttons */
+        button { 
+            background: rgba(255,255,255,0.03); 
+            color: var(--text-dim); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            padding: 8px 18px; font-size: 11px; border-radius: 8px; cursor: pointer; 
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease; 
+        }
+        button:hover { background: rgba(255,255,255,0.08); color: var(--text-main); }
+        button:active { transform: scale(0.96); }
+        button:disabled { opacity: 0.3; cursor: not-allowed; }
+        
+        /* Status Pill */
+        .status-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.4);
+            padding: 7px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            margin-right: 8px;
+        }
+        #statusText { font-size: 10px; font-weight: 800; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; background-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
+
+        #connectBtn { border-color: rgba(0, 229, 255, 0.3); color: var(--accent-blue); }
+        #connectBtn:hover { background: rgba(0, 229, 255, 0.1); border-color: var(--accent-blue); box-shadow: 0 0 15px var(--accent-blue-glow); }
+        
+        #uploadBtn { background: rgba(0, 229, 255, 0.15); border-color: rgba(0, 229, 255, 0.3); color: var(--accent-blue); }
+        #uploadBtn:hover:not(:disabled) { background: rgba(0, 229, 255, 0.3); border-color: var(--accent-blue); box-shadow: 0 0 20px var(--accent-blue-glow); color: #fff; }
+
+        #muteBtn { border-color: rgba(255, 42, 64, 0.3); color: var(--accent-red); }
+        #muteBtn:hover { background: rgba(255, 42, 64, 0.1); border-color: var(--accent-red); box-shadow: 0 0 15px var(--accent-red-glow); }
+        #muteBtn.muted { background: var(--accent-red); color: #fff; border-color: var(--accent-red); box-shadow: 0 0 20px var(--accent-red-glow); }
 
         .preset-control { display: flex; align-items: center; background: rgba(0,0,0,0.4); border-radius: 8px; border: 1px solid var(--border); }
-        .preset-btn { border: none; background: transparent; padding: 10px 15px; font-size: 16px; border-radius: 0; }
+        .preset-btn { border: none; background: transparent; padding: 10px 15px; font-size: 14px; border-radius: 0; color: var(--text-dim); }
+        .preset-btn:hover { color: var(--text-main); }
         
-        input[type="text"] { background: transparent; color: white; border: none; padding: 10px; font-size: 16px; text-align: center; width: 140px; font-weight: 800; letter-spacing: 1px; outline: none; border-left: 1px solid var(--border); border-right: 1px solid var(--border); text-transform: uppercase; }
+        input[type="text"] { background: transparent; color: white; border: none; padding: 10px; font-size: 15px; text-align: center; width: 140px; font-weight: 800; letter-spacing: 1px; outline: none; border-left: 1px solid var(--border); border-right: 1px solid var(--border); text-transform: uppercase; }
         input[type="text"]:focus { background: rgba(255,255,255,0.05); }
-        
-        #status { font-size: 11px; font-weight: 700; color: var(--text-dim); display: flex; align-items: center; gap: 6px; letter-spacing: 1px; text-transform: uppercase; }
-        .status-dot { width: 8px; height: 8px; border-radius: 50%; background-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
 
         /* MAIN LAYOUT */
         main { display: flex; flex-grow: 1; overflow: hidden; }
@@ -295,16 +276,17 @@
             body { height: auto; min-height: 100vh; overflow-y: auto; }
             header { flex-direction: column; gap: 15px; padding: 15px; }
             .nav-left, .nav-center, .nav-right { width: 100%; justify-content: center; text-align: center; }
-            .nav-left { flex-direction: column; gap: 10px; }
+            .nav-left { flex-direction: row; justify-content: center; gap: 15px; }
             .nav-right { 
                 display: grid; 
                 grid-template-columns: 1fr 1fr; 
                 gap: 10px; 
             }
+            .status-wrapper { grid-column: 1 / -1; justify-content: center; margin: 0; }
             .nav-right button {
                 width: 100%;
                 padding: 12px 5px;
-                font-size: 11px; /* Slightly smaller font so "Upload to Guitar" fits perfectly */
+                font-size: 11px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -333,13 +315,10 @@
 
     <header>
         <div class="nav-left">
-            <a href="/" style="text-decoration: none; color: var(--text-dim); font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 5px; transition: color 0.2s;">
-    <i class="fa-solid fa-arrow-left"></i> Home
-</a>
+            <a href="/" class="home-btn" title="Back to Home"><i class="fa-solid fa-arrow-left"></i></a>
             <div class="brand-container">
-                <img src="/CORE.png" alt="CORE Logo" style="height: 52px;">
+                <img src="/CORE.png" alt="CORE Logo" style="height: 32px;">
             </div>
-            <div id="status"><div class="status-dot" id="statusDot"></div><span id="statusText">Disconnected</span></div>
         </div>
         <div class="nav-center">
             <div class="preset-control">
@@ -350,8 +329,13 @@
             <span style="color:var(--text-dim); font-weight:800; font-size: 12px; margin-left: 15px; letter-spacing: 2px;" id="presetLabel">PRESET 1</span>
         </div>
         <div class="nav-right">
-            <button id="themeBtn" onclick="toggleTheme()" style="border-color: var(--text-dim); color: var(--text-dim); background: transparent;">☀️ Light</button>
             <button id="muteBtn" onclick="toggleMute()">⏻ Mute</button>
+            
+            <div class="status-wrapper">
+                <div class="status-dot" id="statusDot"></div>
+                <span id="statusText">Disconnected</span>
+            </div>
+            
             <button id="connectBtn" onclick="toggleConnection()">Pair Device</button>
             <button id="uploadBtn" onclick="uploadToGuitar()" disabled>Upload to Guitar</button>
         </div>
@@ -541,7 +525,7 @@
 
         let draggedItem = null;
         let touchSelectedItem = null;
-        let draggedSlotIndex = null; // NEW: Tracks slot-to-slot dragging 
+        let draggedSlotIndex = null; 
 
         document.querySelectorAll('.catalog-item').forEach(item => {
             item.addEventListener('dragstart', (e) => { draggedItem = item; });
@@ -628,7 +612,7 @@
                 } else {
                     slot.innerHTML = `<div class="empty-text">Drop Effect<br>Here</div>`;
                 }
-                // Make the slot draggable, but disable dragging if clicking a knob or input
+                
                 slot.draggable = true;
                 slot.addEventListener('dragstart', (e) => {
                     if (e.target.tagName.toLowerCase() === 'input' || e.target.tagName.toLowerCase() === 'span' || e.target.tagName.toLowerCase() === 'svg' || e.target.closest('.knob-wrapper')) {
@@ -639,7 +623,6 @@
                 });
                 slot.addEventListener('dragend', () => { draggedSlotIndex = null; });
 
-                // Make slot draggable for swapping
                 slot.draggable = isFilled;
                 slot.addEventListener('dragstart', (e) => {
                     if (e.target.tagName.toLowerCase() === 'input' || e.target.closest('.knob-wrapper') || e.target.closest('.bypass-btn')) {
@@ -656,11 +639,9 @@
                     slot.classList.remove('drag-over');
                     
                     if (draggedItem) {
-                        // Drop from Catalog (Sidebar)
                         presets[currentPresetIndex].slots[i] = draggedItem.dataset.hex;
                         presets[currentPresetIndex].params[i] = [50, 50, 50]; 
                         presets[currentPresetIndex].bypassed[i] = false;
-                        // If the Target Knob was on one of these slots, mathematically swap its assignment too!
                         let targetGlobalIdx = presets[currentPresetIndex].knob;
                         let movingSlotTarget = (targetGlobalIdx >= window.draggedSlotIndex * 3 && targetGlobalIdx < window.draggedSlotIndex * 3 + 3);
                         let destSlotTarget = (targetGlobalIdx >= i * 3 && targetGlobalIdx < i * 3 + 3);
@@ -672,7 +653,6 @@
                         }
                         saveState(); renderChain();
                     } else if (window.draggedSlotIndex !== null && window.draggedSlotIndex !== i) {
-                        // Swap two active slots!
                         let tempSlot = presets[currentPresetIndex].slots[i];
                         let tempParams = [...presets[currentPresetIndex].params[i]];
                         let tempBypass = presets[currentPresetIndex].bypassed[i];
@@ -750,7 +730,7 @@
         async function toggleConnection() {
             if (connectedDevice && connectedDevice.gatt.connected) {
                 connectedDevice.gatt.disconnect();
-                return; // handleDisconnect() will fire automatically
+                return; 
             }
 
             try {
@@ -777,7 +757,7 @@
             }
         }
 
-        // --- MUTE & UNMUTE FIX (No "UPDATED" screen) ---
+        // --- MUTE & UNMUTE FIX ---
         async function toggleMute() {
             isMuted = !isMuted;
             let btn = document.getElementById('muteBtn');
@@ -798,7 +778,6 @@
                 btn.innerText = "⏻ Mute";
                 if (!bleCharacteristic) return;
                 
-                // UNMUTE: Send ONLY slider values. Skips Name Payload so OLED does not flash "UPDATED".
                 let pData = presets[currentPresetIndex];
                 let getMidi = (val) => Math.round((val / 100) * 127);
 
@@ -829,7 +808,6 @@
 
             let pData = presets[currentPresetIndex];
             
-            // If bypassed, send 0 (Empty) to the C++, otherwise send the real hex!
             let getHex = (idx) => pData.bypassed[idx] ? 0 : parseInt(pData.slots[idx], 16);
             
             let basePayload = [0xF0, 0x01, currentPresetIndex, 
@@ -847,7 +825,6 @@
                              getMidi(pData.params[3][0]), getMidi(pData.params[3][1]), getMidi(pData.params[3][2]),
                              getMidi(pData.params[4][0]), getMidi(pData.params[4][1]), getMidi(pData.params[4][2]), 0xF7];
 
-            // Sending this 4th chunk is what triggers the memory save & "UPDATED" screen
             let namePayload = [0xF0, 0x02, currentPresetIndex];
             for (let i = 0; i < pData.name.length && i < 11; i++) {
                 namePayload.push(pData.name.charCodeAt(i));
@@ -873,31 +850,13 @@
                 setTimeout(() => { btn.innerText = "Upload to Guitar"; btn.disabled = false; }, 2000);
             }
         }
-        // --- THEME TOGGLE LOGIC ---
-        function toggleTheme() {
-            let body = document.body;
-            let btn = document.getElementById('themeBtn');
-            body.classList.toggle('light-mode');
-            
-            if (body.classList.contains('light-mode')) {
-                btn.innerText = "🌙 Dark";
-                localStorage.setItem('core_theme', 'light');
-            } else {
-                btn.innerText = "☀️ Light";
-                localStorage.setItem('core_theme', 'dark');
-            }
-        }
-
-        // Auto-load saved theme on boot
-        if (localStorage.getItem('core_theme') === 'light') {
-            toggleTheme(); 
-        }
+        
         window.toggleBypass = function(event, slotIdx) {
             event.stopPropagation();
             presets[currentPresetIndex].bypassed[slotIdx] = !presets[currentPresetIndex].bypassed[slotIdx];
             saveState();
             renderChain();
-            if (bleCharacteristic) uploadToGuitar(); // Instantly update the guitar
+            if (bleCharacteristic) uploadToGuitar();
         }
 
         loadState();
