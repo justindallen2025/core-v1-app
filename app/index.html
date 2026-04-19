@@ -56,38 +56,23 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.8); z-index: 10; flex-shrink: 0; 
         }
         
-        .nav-left { display: flex; align-items: center; gap: 20px; width: 320px; }
-        .nav-center { display: flex; align-items: center; gap: 15px; flex-grow: 1; justify-content: center; }
-        .nav-right { display: flex; justify-content: flex-end; align-items: center; gap: 12px; }
+        .nav-left { display: flex; align-items: center; gap: 20px; flex: 1; }
+        .nav-center { display: flex; align-items: center; gap: 15px; flex: 1; justify-content: center; }
+        .nav-right { display: flex; justify-content: flex-end; align-items: center; gap: 12px; flex: 1; }
         
         .home-btn {
-            color: var(--text-dim);
-            font-size: 16px;
-            text-decoration: none;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid transparent;
+            color: var(--text-dim); font-size: 16px; text-decoration: none; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; border-radius: 8px; background: rgba(255,255,255,0.03); border: 1px solid transparent;
         }
-        .home-btn:hover {
-            color: var(--text-main);
-            background: rgba(255,255,255,0.08);
-            border: 1px solid var(--border);
-        }
+        .home-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.08); border: 1px solid var(--border); }
 
         .brand-container { display: flex; align-items: center; }
         .brand-container img { height: 48px; filter: drop-shadow(0 0 8px rgba(255,200,100,0.3)); }
         
         /* Stealth Buttons */
         button { 
-            background: rgba(255,255,255,0.03); 
-            color: var(--text-dim); 
-            border: 1px solid rgba(255,255,255,0.1); 
+            background: rgba(255,255,255,0.03); color: var(--text-dim); border: 1px solid rgba(255,255,255,0.1); 
             padding: 8px 18px; font-size: 11px; border-radius: 8px; cursor: pointer; 
             font-weight: 700; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease; 
         }
@@ -97,14 +82,8 @@
         
         /* Status Pill */
         .status-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0,0,0,0.4);
-            padding: 7px 14px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            margin-right: 8px;
+            display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.4);
+            padding: 7px 14px; border-radius: 20px; border: 1px solid var(--border); margin-right: 8px;
         }
         #statusText { font-size: 10px; font-weight: 800; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; }
         .status-dot { width: 6px; height: 6px; border-radius: 50%; background-color: #ef4444; box-shadow: 0 0 8px #ef4444; }
@@ -133,6 +112,7 @@
         aside { 
             width: 260px; background: var(--bg-panel); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
             border-right: 1px solid var(--border); padding: 25px 20px; overflow-y: auto; flex-shrink: 0; box-shadow: 5px 0 30px rgba(0,0,0,0.5); z-index: 5;
+            display: flex; flex-direction: column;
         }
         aside h3 { margin-top: 0; color: var(--accent-blue); font-size: 10px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; }
         
@@ -161,18 +141,13 @@
         
         .preset-title-display { position: absolute; top: 40px; color: rgba(255,255,255,0.03); font-size: 80px; font-weight: 900; letter-spacing: 10px; text-transform: uppercase; z-index: 0; pointer-events: none; }
 
-        /* FIX 1: Lock to a single row and allow horizontal touch scrolling on iPad/iPhone */
         .chain-container { 
-            display: flex; gap: 15px; align-items: center; justify-content: flex-start; 
-            padding: 40px 20px; z-index: 1; 
-            flex-wrap: nowrap; /* Stops the messy 2-row wrapping on iPad */
+            display: flex; gap: 15px; align-items: center; justify-content: center; 
+            padding: 40px 20px 20px 20px; z-index: 1; 
+            flex-wrap: wrap; /* Allows pedals to wrap into rows instead of overlapping the HUD */
             width: 100%; max-width: 100%; 
-            overflow-x: auto; /* Enables horizontal scroll */
-            -webkit-overflow-scrolling: touch;
-            margin-top: 30px;
         }
         
-        /* Prevent pedals from squishing on small screens */
         .slot-wrapper, .signal-wire { flex: 0 0 auto; }
         
         /* GLASSMORPHISM PEDAL CARDS */
@@ -265,13 +240,11 @@
         .signal-wire.active::after { border-left-color: var(--accent-blue); filter: drop-shadow(0 0 4px var(--accent-blue-glow)); }
 
         /* --- BOTTOM HUD & INLINE STARS CSS --- */
-        /* FIX 2: Restored to normal flow to avoid overlapping */
         .bottom-hud {
             width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;
             padding: 20px; box-sizing: border-box; z-index: 5; gap: 15px;
-            margin-top: auto; /* Smoothly pushes the HUD below the pedals */
+            margin-top: auto; /* Always sits at the bottom of the board area without overlapping */
         }
-        
         .footer-hint { color: var(--text-dim); font-size: 11px; font-weight: 600; letter-spacing: 1px; margin: 0; text-align: center; }
 
         .inline-rating-container { display: flex; flex-direction: column; align-items: center; gap: 8px; }
@@ -297,9 +270,16 @@
         .slot.bypassed .slot-icon, .slot.bypassed .slot-name, .slot.bypassed .param-container { opacity: 0.25; pointer-events: none; filter: grayscale(100%); }
 
         /* --- FOUNDER CREDIT --- */
-        .founder-credit { margin-top: 30px; padding-top: 15px; border-top: 1px solid var(--border); text-align: center; font-size: 10px; color: var(--text-dim); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+        .founder-credit { margin-top: auto; padding-top: 15px; border-top: 1px solid var(--border); text-align: center; font-size: 10px; color: var(--text-dim); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
         .founder-credit a { color: var(--accent-blue); text-decoration: none; transition: all 0.2s ease; }
         .founder-credit a:hover { color: var(--text-main); text-shadow: 0 0 10px var(--accent-blue-glow); }
+
+        /* --- RESPONSIVE FIXES (iPad & Desktop overlaps) --- */
+        @media (max-width: 1150px) {
+            /* Shrink pedals slightly so they fit cleanly without wrapping into massive columns */
+            .slot { transform: scale(0.85); transform-origin: top center; margin-bottom: -40px; margin-right: -10px; }
+            input[type="text"] { width: 100px; }
+        }
 
         /* --- MOBILE RESPONSIVE (iPhones and small screens) --- */
         @media (max-width: 900px) {
@@ -310,25 +290,33 @@
             .home-btn { position: absolute; left: 0; top: 50%; transform: translateY(-50%); margin: 0; }
             .nav-center { width: 100%; justify-content: center; }
             
+            /* iPhone Header Grid Fix */
             .nav-right { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
-            .nav-right button { width: 100%; padding: 12px 5px; font-size: 11px; display: flex; align-items: center; justify-content: center; }
+            #muteBtn { grid-column: 1 / -1; } /* FIX: Mute button spans all the way across */
             .status-wrapper { grid-column: 1 / -1; justify-content: center; margin: 0; }
+            .nav-right button { width: 100%; padding: 12px 5px; font-size: 11px; display: flex; align-items: center; justify-content: center; }
 
             main { flex-direction: column; overflow-y: visible; }
-            aside { width: 100%; order: 2; border-right: none; border-top: 1px solid var(--border); padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; box-sizing: border-box; }
+            
+            /* iPhone Catalog Fixes */
+            aside { width: 100%; order: 2; border-right: none; border-top: 1px solid var(--border); padding: 15px; padding-bottom: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; box-sizing: border-box; }
             aside h3 { grid-column: 1 / -1; margin-top: 15px; margin-bottom: 5px; }
             .catalog-item { margin-bottom: 0; padding: 10px; font-size: 12px; }
+            .founder-credit { grid-column: 1 / -1; margin-top: 30px; padding-bottom: 40px; } /* Ensures it clears the Apple bottom bar */
             
+            /* iPhone Static Board Fix (Tight Wrap) */
             .board-area { order: 1; padding: 0; overflow: hidden; }
             .preset-title-display { display: none; }
             #auxTargetContainer { position: relative !important; top: 0 !important; right: 0 !important; margin: 15px auto; display: flex; justify-content: center; width: 100%; }
             
-            /* Shrink pedals slightly on phones so they fit beautifully */
-            .slot { transform: scale(0.85); transform-origin: top center; margin-bottom: -40px; }
+            .chain-container { padding: 10px; gap: 5px; }
+            /* Shrink pedals aggressively on mobile and tightly stack them in a grid */
+            .slot { transform: scale(0.65); transform-origin: top center; margin-bottom: -90px; margin-right: -40px; }
+            
             .signal-wire { display: none; }
             .remove-btn { opacity: 1; transform: scale(1); top: -5px; right: -5px; }
             
-            /* Toast Fix for Mobile */
+            /* Mobile Toast Fix */
             .toast-glass { bottom: -200px; right: 50%; transform: translateX(50%); transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 90%; max-width: 340px; }
             .toast-glass.show { bottom: 20px; right: 50%; }
         }
