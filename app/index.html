@@ -137,10 +137,11 @@
         /* EFFECTS CHAIN AREA */
         .board-area { 
             flex-grow: 1; display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; /* FIX: Centers the pedals perfectly vertically */
+            justify-content: center; 
             position: relative; 
             overflow-y: auto; overflow-x: hidden; width: 100%;
-            padding-bottom: 80px; /* Gives the absolute HUD breathing room */
+            padding-bottom: 80px; 
+            padding-top: 100px; /* FIX: Hard physical barrier so pedals NEVER hit the ROCK text or AUX button */
         }
         
         .preset-title-display { position: absolute; top: 40px; color: rgba(255,255,255,0.03); font-size: 80px; font-weight: 900; letter-spacing: 10px; text-transform: uppercase; z-index: 0; pointer-events: none; }
@@ -148,10 +149,13 @@
         .chain-container { 
             display: flex; gap: 15px; align-items: center; justify-content: center; 
             padding: 20px; z-index: 1; 
-            flex-wrap: wrap; 
+            flex-wrap: nowrap; 
             width: 100%; max-width: 100%; 
-            margin: 0; /* FIX: Removes auto-margin that was shoving pedals up */
+            overflow-x: auto; -webkit-overflow-scrolling: touch;
+            margin: auto 0; 
         }
+        
+        .chain-container::before, .chain-container::after { content: ''; flex: 1 0 20px; }
         
         .slot-wrapper, .signal-wire { flex: 0 0 auto; }
         
@@ -291,7 +295,6 @@
 
         /* --- IPAD & MEDIUM SCREEN TWEAKS (Strictly Quarantined) --- */
         @media (max-width: 1150px) and (min-width: 901px) {
-            /* FIX: Stops "PRESET 1" from crashing into the MUTE button */
             header { padding: 12px 15px; }
             .nav-left { gap: 10px; width: auto; }
             .nav-center { gap: 10px; flex: 1.5; }
@@ -299,23 +302,22 @@
             #presetLabel { margin-left: 10px; font-size: 11px; }
             input[type="text"] { width: 100px; }
 
-            /* FIX: Restore iPad Horizontal Scroll & Prevent Vertical Overlaps */
-            .board-area { justify-content: flex-start !important; padding-bottom: 0 !important; }
+            /* FIX: Pushes the iPad board down away from the header */
+            .board-area { justify-content: center !important; padding-top: 90px !important; }
+            
             .chain-container { 
                 flex-wrap: nowrap !important; 
                 overflow-x: auto !important; 
                 justify-content: flex-start !important; 
-                padding: 40px 20px !important; 
-                margin: 0 auto !important;
+                padding: 20px !important; 
+                margin: auto 0 !important;
                 -webkit-overflow-scrolling: touch;
             }
-            /* Adds scroll padding to the end of the chain */
             .chain-container::after { content: ''; flex: 0 0 20px; }
             
-            /* Keep pedals a clean size and remove the vertical crunch */
-            .slot { transform: scale(0.9) !important; transform-origin: top center !important; margin: 0 !important; }
+            /* FIX: Shrink pedals slightly more (0.8) and scale them from the center to lower them visually */
+            .slot { transform: scale(0.8) !important; transform-origin: center center !important; margin: 0 !important; }
             
-            /* FIX: Push the rating stars safely below the scrollable pedals */
             .bottom-hud { 
                 position: relative !important; 
                 bottom: auto !important; 
