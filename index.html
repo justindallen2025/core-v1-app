@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#050508">
+    <meta name="theme-color" content="#020617">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>CORE Music Tech | The Software-Defined Guitar</title>
@@ -22,6 +21,7 @@
     <style>
         :root {
             --accent: #00e5ff;
+            --accent-green: #10b981;
             --text-primary: #ffffff;
             --text-secondary: #94a3b8;
             --glass: rgba(255, 255, 255, 0.05);
@@ -36,64 +36,72 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* FIX 1: Lock the absolute max width to the device screen */
-        html, body {
-            max-width: 100vw;
-            overflow-x: hidden;
-            background-color: #050508; /* Forces the rubber-band bounce area to be dark */
+        /* 1. Lock the HTML to prevent Safari's white bounce area */
+        html {
+            background-color: #020617; 
         }
 
-        /* --- Fluid Animated Background --- */
         body {
-            /* Deep Navy, Cyan, and Emerald Green */
-            background: linear-gradient(-45deg, #020617, #083344, #064e3b, #020617);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            max-width: 100vw;
+            overflow-x: hidden;
             color: var(--text-primary);
             font-family: var(--font-main);
             line-height: 1.5;
             scroll-behavior: smooth;
+            background: transparent; /* Let the fixed backgrounds show through */
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* 2. THE NEW SCROLL-DRIVEN BACKGROUND LAYERS */
+        .fixed-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -3;
+        }
+
+        .bg-base {
+            background: linear-gradient(135deg, #020617 0%, #082f49 100%);
+        }
+
+        .bg-scroll {
+            background: linear-gradient(135deg, #083344 0%, #064e3b 100%);
+            opacity: 0; /* This will be changed by JS as you scroll */
+            transition: opacity 0.1s ease-out;
+        }
+
+        /* 3. THE SCROLL-DRIVEN ORBS */
+        .ambient-orb {
+            position: fixed; /* Fixed keeps them from stretching the page height */
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.45;
+            z-index: -2;
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+        }
+        
+        .orb-1 { 
+            width: 500px; height: 500px; 
+            background: var(--accent); /* Cyan */
+            top: -100px; left: -100px; 
+        }
+        
+        .orb-2 { 
+            width: 600px; height: 600px; 
+            background: var(--accent-green); /* Emerald Green */
+            bottom: -200px; right: -100px; 
         }
 
         .page-wrapper {
             position: relative;
             width: 100%;
-            /* FIX 2: Trap the glowing orbs and sliding animations inside the wrapper */
-            overflow-x: hidden; 
-        }
-
-        /* --- Floating Ambient Orbs --- */
-        .ambient-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.4;
-            z-index: -1;
-            /* Remove the float animation, we will use JS scroll now */
-            pointer-events: none;
-            transition: transform 0.1s linear, opacity 0.5s ease;
-        }
-        
-        /* Orb 1: Cyan */
-        .orb-1 { 
-            width: 500px; height: 500px; background: var(--accent); 
-            top: -100px; left: -150px; 
-        }
-        /* Orb 2: Emerald Green */
-        .orb-2 { 
-            width: 600px; height: 600px; background: #10b981; 
-            top: 40%; right: -200px; 
         }
 
         /* --- Glassmorphism Utils --- */
         .glass {
-            background: rgba(5, 5, 8, 0.75);
+            background: rgba(2, 6, 23, 0.6);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--glass-border);
@@ -396,19 +404,10 @@
         @media (max-width: 768px) {
             nav { padding: 0 5%; height: 70px; }
             
-            /* Shrink the logo slightly to make room */
             .logo img { height: 32px !important; } 
-            
-            /* Bring the buttons closer together */
             .nav-actions { gap: 12px; } 
+            .nav-link { display: block; font-size: 0.8rem; } 
             
-            /* Make the Web App link visible but slightly smaller */
-            .nav-link { 
-                display: block; 
-                font-size: 0.8rem; 
-            } 
-            
-            /* Shrink the survey button so it doesn't wrap to a new line */
             .btn-survey { 
                 padding: 6px 12px; 
                 font-size: 0.75rem; 
@@ -423,10 +422,13 @@
 </head>
 <body>
 
-    <div class="page-wrapper">
-        <div class="ambient-orb orb-1"></div>
-        <div class="ambient-orb orb-2"></div>
+    <div class="fixed-bg bg-base"></div>
+    <div class="fixed-bg bg-scroll" id="scrollBg"></div>
+    
+    <div class="ambient-orb orb-1" id="orb1"></div>
+    <div class="ambient-orb orb-2" id="orb2"></div>
 
+    <div class="page-wrapper">
         <nav class="glass">
             <a href="/" class="logo"><img src="/CORE.png" alt="CORE" style="height: 48px;"></a>
             <div class="nav-actions">
@@ -512,29 +514,34 @@
         // Initialize AOS
         window.addEventListener('load', function() {
             AOS.init({
-                once: false,
-                mirror: true,
+                once: false, 
+                mirror: true, 
                 offset: 50,
                 duration: 800,
             });
             setTimeout(() => AOS.refresh(), 100);
         });
 
-        // Dynamic Parallax Scroll Effect for Orbs
+        // The Interactive Scroll Logic
         window.addEventListener('scroll', () => {
             const scrollDepth = window.scrollY;
             const maxScroll = document.body.scrollHeight - window.innerHeight;
-            const scrollRatio = scrollDepth / maxScroll; // Value between 0.0 and 1.0
-
-            const orb1 = document.querySelector('.orb-1');
-            const orb2 = document.querySelector('.orb-2');
-
-            // Move Orb 1 down slightly as user scrolls
-            orb1.style.transform = `translateY(${scrollDepth * 0.3}px)`;
             
-            // Move Orb 2 up, shift it left, and make it more opaque at the bottom
-            orb2.style.transform = `translateY(-${scrollDepth * 0.4}px) translateX(-${scrollRatio * 100}px)`;
-            orb2.style.opacity = 0.3 + (scrollRatio * 0.4); 
+            // Calculate ratio (0.0 at top, 1.0 at bottom)
+            const scrollRatio = maxScroll > 0 ? Math.min(Math.max(scrollDepth / maxScroll, 0), 1) : 0;
+
+            // 1. Fade in the bright cyan/green background layer as you scroll down
+            document.getElementById('scrollBg').style.opacity = scrollRatio * 0.9;
+
+            // 2. Parallax move the orbs based on the scroll ratio
+            const orb1 = document.getElementById('orb1');
+            const orb2 = document.getElementById('orb2');
+
+            // Moves the top cyan orb down and right
+            orb1.style.transform = `translate(${scrollRatio * 20}vw, ${scrollRatio * 30}vh)`;
+            
+            // Moves the bottom green orb up and left
+            orb2.style.transform = `translate(-${scrollRatio * 20}vw, -${scrollRatio * 30}vh)`;
         });
 
         // Smooth scroll handler
