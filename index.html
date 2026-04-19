@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#030712">
+    <meta name="theme-color" content="#050508">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>CORE Music Tech | The Software-Defined Guitar</title>
@@ -21,7 +22,6 @@
     <style>
         :root {
             --accent: #00e5ff;
-            --accent-green: #00ff8c;
             --text-primary: #ffffff;
             --text-secondary: #94a3b8;
             --glass: rgba(255, 255, 255, 0.05);
@@ -36,29 +36,22 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 1. Lock the HTML and Body to prevent the Safari White Bar */
+        /* FIX 1: Lock the absolute max width to the device screen */
         html, body {
             max-width: 100vw;
             overflow-x: hidden;
-            background-color: #030712; /* Deep slate/black base */
+            background-color: #050508; /* Forces the rubber-band bounce area to be dark */
+        }
+
+        /* --- Fluid Animated Background --- */
+        body {
+            background: linear-gradient(-45deg, #050508, #0a1128, #160524, #050508);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
             color: var(--text-primary);
             font-family: var(--font-main);
             line-height: 1.5;
             scroll-behavior: smooth;
-        }
-
-        /* 2. The Bulletproof Fixed Background Layer */
-        .fixed-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -2; /* Keeps it behind everything */
-            /* Much richer Cyan, Deep Teal, and Emerald gradient */
-            background: linear-gradient(-45deg, #030712, #082f49, #064e3b, #030712);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
         }
 
         @keyframes gradientBG {
@@ -70,7 +63,8 @@
         .page-wrapper {
             position: relative;
             width: 100%;
-            overflow-x: hidden; /* Traps the glowing orbs so they don't cause horizontal scrolling */
+            /* FIX 2: Trap the glowing orbs and sliding animations inside the wrapper */
+            overflow-x: hidden; 
         }
 
         /* --- Floating Ambient Orbs --- */
@@ -78,17 +72,17 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(120px);
-            opacity: 0.4;
+            opacity: 0.35;
             z-index: -1;
             animation: float 20s infinite ease-in-out alternate;
             pointer-events: none;
         }
         .orb-1 { width: 500px; height: 500px; background: var(--accent); top: -100px; left: -150px; }
-        .orb-2 { width: 600px; height: 600px; background: var(--accent-green); bottom: 5%; right: -200px; animation-delay: -5s; }
+        .orb-2 { width: 600px; height: 600px; background: #b042ff; bottom: 5%; right: -200px; animation-delay: -5s; }
 
         /* --- Glassmorphism Utils --- */
         .glass {
-            background: rgba(3, 7, 18, 0.6);
+            background: rgba(5, 5, 8, 0.75);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--glass-border);
@@ -391,10 +385,19 @@
         @media (max-width: 768px) {
             nav { padding: 0 5%; height: 70px; }
             
+            /* Shrink the logo slightly to make room */
             .logo img { height: 32px !important; } 
-            .nav-actions { gap: 12px; } 
-            .nav-link { display: block; font-size: 0.8rem; } 
             
+            /* Bring the buttons closer together */
+            .nav-actions { gap: 12px; } 
+            
+            /* Make the Web App link visible but slightly smaller */
+            .nav-link { 
+                display: block; 
+                font-size: 0.8rem; 
+            } 
+            
+            /* Shrink the survey button so it doesn't wrap to a new line */
             .btn-survey { 
                 padding: 6px 12px; 
                 font-size: 0.75rem; 
@@ -408,8 +411,6 @@
     </style>
 </head>
 <body>
-
-    <div class="fixed-bg"></div>
 
     <div class="page-wrapper">
         <div class="ambient-orb orb-1"></div>
@@ -443,7 +444,7 @@
                     </p>
                 </div>
                 <div class="visual-placeholder" data-aos="zoom-in" data-aos-duration="1200" data-aos-delay="200">
-                    <img src="/guitar%20without%20background.png" alt="CORE Prototype playing silently">
+                    <img src="/image_1.png" alt="CORE Prototype playing silently">
                 </div>
             </div>
         </section>
@@ -457,7 +458,7 @@
                     </p>
                 </div>
                 <div class="visual-placeholder" data-aos="zoom-in" data-aos-duration="1200" data-aos-delay="200">
-                    <img src="/electronics%20without%20background.png" alt="CORE Web UI and Hardware">
+                    <img src="/image_2.png" alt="CORE Web UI and Hardware">
                 </div>
             </div>
         </section>
@@ -497,16 +498,19 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // Ensure AOS refreshes calculations once images and iframes fully load
         window.addEventListener('load', function() {
             AOS.init({
-                once: false, 
-                mirror: true, 
+                once: false,     // <-- CHANGED: Now animations trigger every time you scroll up OR down!
+                mirror: true,    // <-- CHANGED: Allows elements to animate out while scrolling past them
                 offset: 50,
                 duration: 800,
             });
+            // Force a refresh immediately after init just to be safe
             setTimeout(() => AOS.refresh(), 100);
         });
 
+        // Smooth scroll handler
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
