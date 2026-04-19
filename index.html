@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#050508">
+    <meta name="theme-color" content="#050810">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>CORE Music Tech | The Software-Defined Guitar</title>
@@ -22,6 +21,7 @@
     <style>
         :root {
             --accent: #00e5ff;
+            --accent-green: #00ff8c;
             --text-primary: #ffffff;
             --text-secondary: #94a3b8;
             --glass: rgba(255, 255, 255, 0.05);
@@ -36,16 +36,17 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* FIX 1: Lock the absolute max width to the device screen */
-        html, body {
-            max-width: 100vw;
-            overflow-x: hidden;
-            background-color: #050508; /* Forces the rubber-band bounce area to be dark */
+        /* FIX: Apply solid dark only to HTML to hide Safari's white bounce area */
+        html {
+            background-color: #050810; 
         }
 
         /* --- Fluid Animated Background --- */
         body {
-            background: linear-gradient(-45deg, #050508, #0a1128, #160524, #050508);
+            max-width: 100vw;
+            overflow-x: hidden;
+            /* New sleek Cyan/Teal/Navy fluid gradient */
+            background: linear-gradient(-45deg, #050810, #0a1f2e, #021c1f, #050810);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             color: var(--text-primary);
@@ -63,7 +64,6 @@
         .page-wrapper {
             position: relative;
             width: 100%;
-            /* FIX 2: Trap the glowing orbs and sliding animations inside the wrapper */
             overflow-x: hidden; 
         }
 
@@ -78,11 +78,12 @@
             pointer-events: none;
         }
         .orb-1 { width: 500px; height: 500px; background: var(--accent); top: -100px; left: -150px; }
-        .orb-2 { width: 600px; height: 600px; background: #b042ff; bottom: 5%; right: -200px; animation-delay: -5s; }
+        /* Changed to Emerald/Green to fit the new aesthetic */
+        .orb-2 { width: 600px; height: 600px; background: var(--accent-green); bottom: 5%; right: -200px; animation-delay: -5s; }
 
         /* --- Glassmorphism Utils --- */
         .glass {
-            background: rgba(5, 5, 8, 0.75);
+            background: rgba(5, 8, 16, 0.6);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--glass-border);
@@ -385,19 +386,10 @@
         @media (max-width: 768px) {
             nav { padding: 0 5%; height: 70px; }
             
-            /* Shrink the logo slightly to make room */
             .logo img { height: 32px !important; } 
-            
-            /* Bring the buttons closer together */
             .nav-actions { gap: 12px; } 
+            .nav-link { display: block; font-size: 0.8rem; } 
             
-            /* Make the Web App link visible but slightly smaller */
-            .nav-link { 
-                display: block; 
-                font-size: 0.8rem; 
-            } 
-            
-            /* Shrink the survey button so it doesn't wrap to a new line */
             .btn-survey { 
                 padding: 6px 12px; 
                 font-size: 0.75rem; 
@@ -498,19 +490,16 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Ensure AOS refreshes calculations once images and iframes fully load
         window.addEventListener('load', function() {
             AOS.init({
-                once: false,     // <-- CHANGED: Now animations trigger every time you scroll up OR down!
-                mirror: true,    // <-- CHANGED: Allows elements to animate out while scrolling past them
+                once: false, 
+                mirror: true, 
                 offset: 50,
                 duration: 800,
             });
-            // Force a refresh immediately after init just to be safe
             setTimeout(() => AOS.refresh(), 100);
         });
 
-        // Smooth scroll handler
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
