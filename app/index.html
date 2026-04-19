@@ -274,6 +274,70 @@
             color: var(--text-main);
             text-shadow: 0 0 10px var(--accent-blue-glow);
         }
+        /* --- FEEDBACK MODAL CSS --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .modal-content {
+            width: 320px;
+            background: rgba(20, 20, 25, 0.85);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            border: 1px solid var(--border);
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        .close-modal {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: transparent; border: none;
+            color: var(--text-dim); font-size: 16px;
+            cursor: pointer; padding: 5px;
+        }
+        .close-modal:hover { color: var(--accent-red); }
+        
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            cursor: pointer;
+        }
+        .star {
+            font-size: 24px;
+            color: rgba(255,255,255,0.1);
+            transition: all 0.2s;
+        }
+        .star.active {
+            color: #fbbf24; /* Gold */
+            filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.5));
+        }
+        #feedbackBtn:hover {
+            color: #fbbf24 !important;
+            border-color: #fbbf24 !important;
+            background: rgba(251, 191, 36, 0.1);
+        }
         
         /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 900px) {
@@ -333,6 +397,8 @@
             <span style="color:var(--text-dim); font-weight:800; font-size: 12px; margin-left: 15px; letter-spacing: 2px;" id="presetLabel">PRESET 1</span>
         </div>
         <div class="nav-right">
+            <button id="feedbackBtn" onclick="openFeedback()" style="border-color: rgba(255, 255, 255, 0.2); color: var(--text-dim);">⭐ Rate</button>
+            
             <button id="muteBtn" onclick="toggleMute()">⏻ Mute</button>
             
             <div class="status-wrapper">
@@ -381,6 +447,27 @@
                 Engineered by <a href="https://www.linkedin.com/in/justindallen2025" target="_blank">Justin Allen</a>
             </div>
         </aside>
+        <div id="feedbackModal" class="modal-overlay">
+            <div class="modal-content glass">
+                <button class="close-modal" onclick="closeFeedback()">✕</button>
+                <h3 style="margin-top: 0; color: var(--text-main); font-size: 18px; letter-spacing: 1px;">How does it sound?</h3>
+                <p style="color: var(--text-dim); font-size: 12px; margin-bottom: 20px;">Rate the CORE prototype. Drop your email to join the beta waitlist.</p>
+                
+                <div class="star-rating" id="starContainer">
+                    <i class="fa-solid fa-star star" data-val="1"></i>
+                    <i class="fa-solid fa-star star" data-val="2"></i>
+                    <i class="fa-solid fa-star star" data-val="3"></i>
+                    <i class="fa-solid fa-star star" data-val="4"></i>
+                    <i class="fa-solid fa-star star" data-val="5"></i>
+                </div>
+                
+                <input type="email" id="betaEmail" placeholder="ENTER YOUR EMAIL (OPTIONAL)" style="width: 100%; box-sizing: border-box; margin-bottom: 20px; text-transform: none;">
+                
+                <button id="submitFeedbackBtn" onclick="submitFeedback()" style="width: 100%; background: var(--accent-blue); color: #000; padding: 12px; font-size: 14px; border: none; box-shadow: 0 0 15px var(--accent-blue-glow);">Submit Feedback</button>
+                
+                <div id="thankYouMsg" style="display: none; color: var(--accent-green); font-weight: 800; font-size: 14px; margin-top: 15px;">✓ Added to Waitlist!</div>
+            </div>
+        </div>
     </main>
 
     <script>
@@ -447,6 +534,54 @@
             let cat = item.getAttribute('data-cat');
             item.innerHTML = `<span class="icon icon-${cat}">${svgs[name]}</span> ${name}`;
         });
+
+        // --- FEEDBACK MODAL LOGIC ---
+        let currentRating = 0;
+        const modal = document.getElementById('feedbackModal');
+        const stars = document.querySelectorAll('.star');
+
+        function openFeedback() {
+            modal.classList.add('active');
+            document.getElementById('thankYouMsg').style.display = 'none';
+            document.getElementById('submitFeedbackBtn').style.display = 'block';
+            document.getElementById('betaEmail').value = '';
+            currentRating = 0;
+            updateStars(0);
+        }
+
+        function closeFeedback() {
+            modal.classList.remove('active');
+        }
+
+        // Handle Star Clicks
+        stars.forEach(star => {
+            star.addEventListener('click', (e) => {
+                currentRating = parseInt(e.target.getAttribute('data-val'));
+                updateStars(currentRating);
+            });
+        });
+
+        function updateStars(val) {
+            stars.forEach((s, idx) => {
+                if (idx < val) s.classList.add('active');
+                else s.classList.remove('active');
+            });
+        }
+
+        function submitFeedback() {
+            let email = document.getElementById('betaEmail').value;
+            
+            // In a real production app, you would send 'currentRating' and 'email' to a database/webhook here.
+            // For the showcase prototype, we just simulate a successful save!
+            
+            document.getElementById('submitFeedbackBtn').style.display = 'none';
+            document.getElementById('thankYouMsg').style.display = 'block';
+            
+            // Auto close after 2 seconds
+            setTimeout(() => {
+                closeFeedback();
+            }, 2000);
+        }
 
         function loadState() {
             let savedPresets = localStorage.getItem('core_v1_presets');
