@@ -277,7 +277,8 @@
         /* --- INLINE STARS & TOAST POPUP CSS --- */
         .inline-rating-container {
             display: flex; flex-direction: column; align-items: center; gap: 8px; 
-            margin-top: auto; padding-bottom: 40px; z-index: 2;
+            /* Changed from auto to fixed margins so it doesn't push the board up */
+            margin-top: 40px; margin-bottom: 20px; z-index: 2;
         }
         .rating-prompt { 
             font-size: 10px; font-weight: 800; color: var(--text-dim); 
@@ -285,7 +286,9 @@
         }
         .inline-stars { display: flex; gap: 10px; cursor: pointer; }
         .inline-star { font-size: 22px; color: rgba(255,255,255,0.05); transition: all 0.2s; }
-        .inline-star:hover, .inline-star.active { 
+        
+        /* Swapped :hover for .hovered so Javascript can control the fill sequence */
+        .inline-star.hovered, .inline-star.active { 
             color: #fbbf24; /* Gold */
             filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.4)); 
             transform: scale(1.1);
@@ -932,18 +935,40 @@
         let toastTimeout;
         const inlineStars = document.querySelectorAll('.inline-star');
         const toast = document.getElementById('waitlistToast');
-        
-        inlineStars.forEach(star => {
+        let currentRating = 0;
+
+        inlineStars.forEach((star, index) => {
+            // 1. Handle sequential hovering (lights up all stars up to the mouse)
+            star.addEventListener('mouseover', () => {
+                inlineStars.forEach((s, i) => {
+                    if (i <= index) s.classList.add('hovered');
+                    else s.classList.remove('hovered');
+                });
+            });
+
+            // 2. Remove hover glow when mouse leaves
+            star.addEventListener('mouseout', () => {
+                inlineStars.forEach(s => s.classList.remove('hovered'));
+            });
+
+            // 3. Handle the actual click
             star.addEventListener('click', (e) => {
-                let currentRating = parseInt(e.target.getAttribute('data-val'));
+                currentRating = parseInt(e.target.getAttribute('data-val'));
                 
-                // Highlight clicked stars
+                // Lock in the active stars
                 inlineStars.forEach((s, idx) => {
                     if (idx < currentRating) s.classList.add('active');
                     else s.classList.remove('active');
                 });
+
+                // SILENTLY SEND RATING TO FORMSPREE IMMEDIATELY
+                fetch('https://formspree.io/f/xwvabjzo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ rating: currentRating, status: "Anonymous Rating" })
+                }).catch(err => console.log("Rating logged silently."));
                 
-                // Reset and show the toast popup
+                // Reset and show the toast popup for the optional email
                 document.getElementById('toastDefault').style.display = 'block';
                 document.getElementById('toastSuccess').style.display = 'none';
                 document.getElementById('toastEmail').value = '';
