@@ -471,8 +471,8 @@
         // Ensure AOS refreshes calculations once images and iframes fully load
         window.addEventListener('load', function() {
             AOS.init({
-                once: true, 
-                mirror: false,
+                once: false,     // <-- CHANGED: Now animations trigger every time you scroll up OR down!
+                mirror: true,    // <-- CHANGED: Allows elements to animate out while scrolling past them
                 offset: 50,
                 duration: 800,
             });
@@ -480,6 +480,7 @@
             setTimeout(() => AOS.refresh(), 100);
         });
 
+        // Smooth scroll handler
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
