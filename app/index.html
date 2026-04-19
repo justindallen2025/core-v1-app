@@ -142,11 +142,16 @@
         .preset-title-display { position: absolute; top: 40px; color: rgba(255,255,255,0.03); font-size: 80px; font-weight: 900; letter-spacing: 10px; text-transform: uppercase; z-index: 0; pointer-events: none; }
 
         .chain-container { 
-            display: flex; gap: 15px; align-items: center; justify-content: center; 
-            padding: 40px 20px 20px 20px; z-index: 1; 
-            flex-wrap: wrap; /* Allows pedals to wrap into rows instead of overlapping the HUD */
+            display: flex; gap: 15px; align-items: center; justify-content: flex-start; 
+            padding: 40px 0 20px 0; z-index: 1; 
+            flex-wrap: nowrap; /* Forces horizontal scrolling */
             width: 100%; max-width: 100%; 
+            overflow-x: auto; -webkit-overflow-scrolling: touch;
+            margin-top: auto; margin-bottom: auto; /* Vertically centers the entire row */
         }
+        
+        /* CSS Magic: Centers the pedals on big screens, acts as padding on small scrolling screens */
+        .chain-container::before, .chain-container::after { content: ''; flex: 1 0 20px; }
         
         .slot-wrapper, .signal-wire { flex: 0 0 auto; }
         
@@ -158,7 +163,7 @@
             border: 1px dashed rgba(255,255,255,0.1); 
             border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
             padding-top: 25px; text-align: center; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-            position: relative; cursor: pointer; box-sizing: border-box; 
+            position: relative; cursor: pointer; box-sizing: border-box; margin: 0;
         }
         .slot.drag-over { background: rgba(0, 229, 255, 0.1); border-color: var(--accent-blue); transform: scale(1.02); }
         
@@ -230,6 +235,7 @@
         .signal-wire { 
             width: 30px; height: 3px; background: rgba(255,255,255,0.05); 
             border-radius: 2px; transition: all 0.3s ease; position: relative; 
+            display: flex; /* Ensures wires show up on horizontal scroll */
         }
         .signal-wire.active { background: var(--accent-blue); box-shadow: 0 0 12px var(--accent-blue-glow); }
         .signal-wire::after { 
@@ -243,7 +249,6 @@
         .bottom-hud {
             width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;
             padding: 20px; box-sizing: border-box; z-index: 5; gap: 15px;
-            margin-top: auto; /* Always sits at the bottom of the board area without overlapping */
         }
         .footer-hint { color: var(--text-dim); font-size: 11px; font-weight: 600; letter-spacing: 1px; margin: 0; text-align: center; }
 
@@ -257,7 +262,7 @@
             position: fixed; bottom: 30px; right: -400px; width: 320px; background: rgba(20, 20, 25, 0.85); 
             backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.8); 
-            transition: right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 2000;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 2000;
         }
         .toast-glass.show { right: 30px; }
         .close-toast { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 14px; }
@@ -274,15 +279,8 @@
         .founder-credit a { color: var(--accent-blue); text-decoration: none; transition: all 0.2s ease; }
         .founder-credit a:hover { color: var(--text-main); text-shadow: 0 0 10px var(--accent-blue-glow); }
 
-        /* --- RESPONSIVE FIXES (iPad & Desktop overlaps) --- */
-        @media (max-width: 1150px) {
-            /* Shrink pedals slightly so they fit cleanly without wrapping into massive columns */
-            .slot { transform: scale(0.85); transform-origin: top center; margin-bottom: -40px; margin-right: -10px; }
-            input[type="text"] { width: 100px; }
-        }
-
-        /* --- MOBILE RESPONSIVE (iPhones and small screens) --- */
-        @media (max-width: 900px) {
+        /* --- MOBILE/IPAD RESPONSIVE FIXES --- */
+        @media (max-width: 1024px) {
             html, body { height: auto; min-height: 100vh; overflow-y: auto; overflow-x: hidden; }
             header { flex-direction: column; gap: 15px; padding: 15px; position: relative; }
             
@@ -290,7 +288,7 @@
             .home-btn { position: absolute; left: 0; top: 50%; transform: translateY(-50%); margin: 0; }
             .nav-center { width: 100%; justify-content: center; }
             
-            /* iPhone Header Grid Fix */
+            /* iPhone/iPad Header Grid Fix */
             .nav-right { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
             #muteBtn { grid-column: 1 / -1; } /* FIX: Mute button spans all the way across */
             .status-wrapper { grid-column: 1 / -1; justify-content: center; margin: 0; }
@@ -298,27 +296,28 @@
 
             main { flex-direction: column; overflow-y: visible; }
             
-            /* iPhone Catalog Fixes */
-            aside { width: 100%; order: 2; border-right: none; border-top: 1px solid var(--border); padding: 15px; padding-bottom: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; box-sizing: border-box; }
+            /* Catalog Drops to bottom */
+            aside { width: 100%; order: 2; border-right: none; border-top: 1px solid var(--border); padding: 15px; padding-bottom: 50px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; box-sizing: border-box; }
             aside h3 { grid-column: 1 / -1; margin-top: 15px; margin-bottom: 5px; }
             .catalog-item { margin-bottom: 0; padding: 10px; font-size: 12px; }
-            .founder-credit { grid-column: 1 / -1; margin-top: 30px; padding-bottom: 40px; } /* Ensures it clears the Apple bottom bar */
+            .founder-credit { grid-column: 1 / -1; margin-top: 30px; } 
             
-            /* iPhone Static Board Fix (Tight Wrap) */
-            .board-area { order: 1; padding: 0; overflow: hidden; }
+            /* iPad/Mobile Horizontal Scrolling Board */
+            .board-area { order: 1; padding: 0; overflow: hidden; min-height: 450px; display: flex; flex-direction: column; justify-content: flex-start; }
             .preset-title-display { display: none; }
-            #auxTargetContainer { position: relative !important; top: 0 !important; right: 0 !important; margin: 15px auto; display: flex; justify-content: center; width: 100%; }
+            #auxTargetContainer { position: relative !important; top: 0 !important; right: 0 !important; margin: 15px auto 0 auto; display: flex; justify-content: center; width: 100%; }
             
-            .chain-container { padding: 10px; gap: 5px; }
-            /* Shrink pedals aggressively on mobile and tightly stack them in a grid */
-            .slot { transform: scale(0.65); transform-origin: top center; margin-bottom: -90px; margin-right: -40px; }
+            /* The Horizontal Scroll setup */
+            .chain-container { padding: 10px 0; gap: 15px; margin-top: auto; margin-bottom: auto; }
+            .chain-container::before, .chain-container::after { content: ''; flex: 0 0 5px; } 
             
-            .signal-wire { display: none; }
-            .remove-btn { opacity: 1; transform: scale(1); top: -5px; right: -5px; }
-            
-            /* Mobile Toast Fix */
-            .toast-glass { bottom: -200px; right: 50%; transform: translateX(50%); transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 90%; max-width: 340px; }
-            .toast-glass.show { bottom: 20px; right: 50%; }
+            /* Mobile Toast Fix (Drops from top to avoid keyboard bounce) */
+            .toast-glass { 
+                bottom: auto; right: 50%; transform: translateX(50%); 
+                top: -200px; /* Hidden above screen */
+                width: 90%; max-width: 340px; 
+            }
+            .toast-glass.show { top: 20px; right: 50%; }
         }
     </style>
 </head>
