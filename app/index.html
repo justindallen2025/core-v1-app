@@ -302,27 +302,29 @@
             #presetLabel { margin-left: 10px; font-size: 11px; }
             input[type="text"] { width: 100px; }
 
-            /* FIX: Pushes the iPad board down away from the header */
-            .board-area { justify-content: center !important; padding-top: 90px !important; }
+            /* Switch to top-alignment so we can manually push the pedals exactly where we want them */
+            .board-area { justify-content: flex-start !important; padding-top: 0 !important; }
             
             .chain-container { 
                 flex-wrap: nowrap !important; 
                 overflow-x: auto !important; 
                 justify-content: flex-start !important; 
                 padding: 20px !important; 
-                margin: auto 0 !important;
+                /* FIX: Physically forces the pedals down past the ROCK text and AUX button */
+                margin-top: 130px !important; 
+                margin-bottom: auto !important;
                 -webkit-overflow-scrolling: touch;
             }
             .chain-container::after { content: ''; flex: 0 0 20px; }
             
-            /* FIX: Shrink pedals slightly more (0.8) and scale them from the center to lower them visually */
             .slot { transform: scale(0.8) !important; transform-origin: center center !important; margin: 0 !important; }
             
+            /* FIX: Eliminates the dead space at the bottom */
             .bottom-hud { 
                 position: relative !important; 
                 bottom: auto !important; 
-                margin-top: 10px !important; 
-                padding-bottom: 40px !important; 
+                margin-top: auto !important; 
+                padding-bottom: 15px !important; 
             }
         }
 
