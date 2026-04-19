@@ -372,8 +372,27 @@
         }
 
         @media (max-width: 768px) {
-            nav { padding: 1rem 5%; height: 70px; }
-            .nav-link { display: none; } 
+            nav { padding: 0 5%; height: 70px; }
+            
+            /* Shrink the logo slightly to make room */
+            .logo img { height: 32px !important; } 
+            
+            /* Bring the buttons closer together */
+            .nav-actions { gap: 12px; } 
+            
+            /* Make the Web App link visible but slightly smaller */
+            .nav-link { 
+                display: block; 
+                font-size: 0.8rem; 
+            } 
+            
+            /* Shrink the survey button so it doesn't wrap to a new line */
+            .btn-survey { 
+                padding: 6px 12px; 
+                font-size: 0.75rem; 
+                letter-spacing: 0;
+            } 
+            
             section { padding: 4rem 5%; }
             .hero-btns { flex-direction: column; width: 100%; }
             .btn-primary, .btn-outline { width: 100%; text-align: center; }
@@ -408,7 +427,7 @@
         <section id="solution">
             <div class="flex-section">
                 <div class="flex-content" data-aos="fade-right" data-aos-duration="1000">
-                    <h2>The Death of<br>Setup Friction.</h2>
+                    <h2>The Death of<br>Setup Friction</h2>
                     <p class="body-text">
                         If you're like 64% of guitarists, you practice unplugged because wrestling with pedalboards, power supplies, and audio interfaces kills your motivation. We fixed that. CORE embeds a massive 480MHz studio-grade supercomputer directly into your pickguard. Just pick up your guitar, plug in your headphones, and your stadium rig is instantly in your ears. No amps. No dongles. Just play.
                     </p>
@@ -422,7 +441,7 @@
         <section id="tech">
             <div class="flex-section" style="flex-direction: row-reverse;">
                 <div class="flex-content" data-aos="fade-left" data-aos-duration="1000">
-                    <h2>Solderless Drop-In.<br>Wireless Control.</h2>
+                    <h2>Solderless Drop-In<br>Wireless Control</h2>
                     <p class="body-text">
                         Upgrading your Stratocaster shouldn't require a soldering iron. Our drop-in hub uses mechanical screw-terminals to securely integrate your existing analog pickups. Once installed, route your entire signal chain via Bluetooth Low Energy (BLE) with sub-12ms latency using our Web App. Save the exact preset to the guitar's onboard memory, and leave the screen behind.
                     </p>
@@ -435,7 +454,7 @@
 
         <section id="architecture">
             <div style="text-align: center;" data-aos="fade-up" data-aos-duration="1000">
-                <h2>Under the Hood.</h2>
+                <h2>Under the Hood</h2>
                 <p class="body-text" style="margin: 0 auto;">
                     Interact with the mechanical layout of the CORE MVP. We managed to fit an ARM Cortex-M7, a mechanical true-bypass relay, and a rechargeable power array into a standard cavity without routing a single millimeter of wood.
                 </p>
@@ -448,7 +467,7 @@
         <section id="survey">
             <div class="cta-box" data-aos="zoom-in" data-aos-duration="1000">
                 <span class="kicker">PATENT PENDING | BUILT AT GEORGIA TECH</span>
-                <h2>Join the Priority Waitlist.</h2>
+                <h2>Join the Priority Waitlist</h2>
                 <p class="body-text" style="margin: 0 auto 10px auto;">
                     We are preparing for our Phase 1 hardware manufacturing run. We need 10-15 dedicated beta testers to help validate our DSP algorithms before public launch. Drop your email in the survey to get on the shortlist.
                 </p>
