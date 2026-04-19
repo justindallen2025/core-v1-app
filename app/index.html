@@ -335,53 +335,52 @@
         /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 900px) {
             body { height: auto; min-height: 100vh; overflow-y: auto; }
-            header { flex-direction: column; gap: 15px; padding: 15px; }
-            .nav-left, .nav-center, .nav-right { width: 100%; justify-content: center; text-align: center; }
-            .nav-left { flex-direction: row; justify-content: center; gap: 15px; }
-            .nav-right { 
-                display: grid; 
-                grid-template-columns: 1fr 1fr; 
-                gap: 10px; 
-            }
-            /* --- Mobile HUD Fixes --- */
-            .bottom-hud {
-                position: relative;
-                bottom: 0;
-                flex-direction: column;
-                justify-content: center;
-                padding: 20px;
-                gap: 15px;
-                margin-top: auto; /* Pushes it to bottom of scroll view */
-            }
-            .footer-hint { text-align: center; }
-            .inline-rating-container { flex-direction: column; gap: 8px; }
-            .toast-glass { 
-                bottom: -200px; right: 50%; transform: translateX(50%); 
-                transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-                width: 90%; max-width: 340px; 
-            }
-            .toast-glass.show { bottom: 20px; right: 50%; }
+            header { flex-direction: column; gap: 15px; padding: 15px; position: relative; }
+            
+            /* Centered Logo & Left Back Button */
+            .nav-left { position: relative; width: 100%; display: flex; justify-content: center; align-items: center; }
+            .home-btn { position: absolute; left: 0; top: 50%; transform: translateY(-50%); margin: 0; }
+            .nav-center { width: 100%; justify-content: center; }
+            
+            /* Grid for right nav buttons */
+            .nav-right { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+            .nav-right button { width: 100%; padding: 12px 5px; font-size: 11px; display: flex; align-items: center; justify-content: center; }
             .status-wrapper { grid-column: 1 / -1; justify-content: center; margin: 0; }
-            .nav-right button {
-                width: 100%;
-                padding: 12px 5px;
-                font-size: 11px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
+
             main { flex-direction: column; overflow-y: visible; }
             aside { width: 100%; order: 2; border-right: none; border-top: 1px solid var(--border); padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; box-sizing: border-box; }
             aside h3 { grid-column: 1 / -1; margin-top: 15px; margin-bottom: 5px; }
             .catalog-item { margin-bottom: 0; padding: 10px; font-size: 12px; }
-            .board-area { order: 1; padding: 30px 0; justify-content: flex-start; }
-            .preset-title-display { position: relative; top: 0; margin-bottom: 15px; font-size: 40px; }
-            #auxTargetContainer { position: relative !important; top: 0 !important; right: 0 !important; margin-bottom: 15px; display: flex; justify-content: center; width: 100%; }
-            .chain-container { flex-wrap: wrap; justify-content: center; padding: 15px; gap: 15px; }
-            .slot { width: 140px; height: 260px; padding-top: 15px; }
+            
+            .board-area { order: 1; padding: 20px 0; justify-content: flex-start; overflow: hidden; }
+            .preset-title-display { position: relative; top: 0; margin-bottom: 0px; font-size: 40px; }
+            #auxTargetContainer { position: relative !important; top: 0 !important; right: 0 !important; margin: 10px auto; display: flex; justify-content: center; width: 100%; }
+            
+            /* FIX: Horizontal Scrolling for Pedals on Mobile */
+            .chain-container { 
+                flex-wrap: nowrap; 
+                overflow-x: auto; 
+                justify-content: flex-start; 
+                width: 100%; 
+                padding: 20px 15px; 
+                gap: 15px; 
+                -webkit-overflow-scrolling: touch;
+            }
+            /* Forces slots to keep their exact size so they don't squish */
+            .slot { flex: 0 0 auto; width: 140px; height: 260px; padding-top: 15px; } 
+            
             .signal-wire { display: none; }
             .remove-btn { opacity: 1; transform: scale(1); top: -5px; right: -5px; }
             .founder-credit { grid-column: 1 / -1; margin-top: 15px; }
+            
+            /* Bottom HUD Fixes */
+            .bottom-hud { position: relative; bottom: 0; flex-direction: column; justify-content: center; padding: 20px; gap: 15px; margin-top: 10px; }
+            .footer-hint { text-align: center; }
+            .inline-rating-container { flex-direction: column; gap: 8px; margin-top: 0; padding-bottom: 0;}
+            
+            /* Toast Fix */
+            .toast-glass { bottom: -200px; right: 50%; transform: translateX(50%); transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 90%; max-width: 340px; }
+            .toast-glass.show { bottom: 20px; right: 50%; }
         }
     </style>
 </head>
