@@ -302,29 +302,29 @@
             #presetLabel { margin-left: 10px; font-size: 11px; }
             input[type="text"] { width: 100px; }
 
-            /* Switch to top-alignment so we can manually push the pedals exactly where we want them */
-            .board-area { justify-content: flex-start !important; padding-top: 0 !important; }
+            /* FIX: Center everything vertically and add a buffer at the top so it never hits the header */
+            .board-area { justify-content: center !important; padding-top: 50px !important; }
             
             .chain-container { 
                 flex-wrap: nowrap !important; 
                 overflow-x: auto !important; 
                 justify-content: flex-start !important; 
                 padding: 20px !important; 
-                /* FIX: Physically forces the pedals down past the ROCK text and AUX button */
-                margin-top: 130px !important; 
-                margin-bottom: auto !important;
+                /* FIX: Remove the aggressive margins so it centers naturally */
+                margin-top: 0 !important; 
+                margin-bottom: 0 !important;
                 -webkit-overflow-scrolling: touch;
             }
             .chain-container::after { content: ''; flex: 0 0 20px; }
             
             .slot { transform: scale(0.8) !important; transform-origin: center center !important; margin: 0 !important; }
             
-            /* FIX: Eliminates the dead space at the bottom */
+            /* FIX: Kill the 'auto' margin spring. Hug the pedals tightly and remove dead space at the bottom */
             .bottom-hud { 
                 position: relative !important; 
                 bottom: auto !important; 
-                margin-top: auto !important; 
-                padding-bottom: 15px !important; 
+                margin-top: 20px !important; 
+                padding-bottom: 10px !important; 
             }
         }
 
