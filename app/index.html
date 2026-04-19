@@ -289,15 +289,39 @@
         .founder-credit a { color: var(--accent-blue); text-decoration: none; transition: all 0.2s ease; }
         .founder-credit a:hover { color: var(--text-main); text-shadow: 0 0 10px var(--accent-blue-glow); }
 
-        /* --- IPAD & DESKTOP TWEAKS --- */
-        @media (max-width: 1150px) {
-            /* FIX: Stops "PRESET 1" from crashing into the MUTE button on iPads */
+        /* --- IPAD & MEDIUM SCREEN TWEAKS (Strictly Quarantined) --- */
+        @media (max-width: 1150px) and (min-width: 901px) {
+            /* FIX: Stops "PRESET 1" from crashing into the MUTE button */
             header { padding: 12px 15px; }
             .nav-left { gap: 10px; width: auto; }
             .nav-center { gap: 10px; flex: 1.5; }
             .nav-right { gap: 8px; }
             #presetLabel { margin-left: 10px; font-size: 11px; }
             input[type="text"] { width: 100px; }
+
+            /* FIX: Restore iPad Horizontal Scroll & Prevent Vertical Overlaps */
+            .board-area { justify-content: flex-start !important; padding-bottom: 0 !important; }
+            .chain-container { 
+                flex-wrap: nowrap !important; 
+                overflow-x: auto !important; 
+                justify-content: flex-start !important; 
+                padding: 40px 20px !important; 
+                margin: 0 auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            /* Adds scroll padding to the end of the chain */
+            .chain-container::after { content: ''; flex: 0 0 20px; }
+            
+            /* Keep pedals a clean size and remove the vertical crunch */
+            .slot { transform: scale(0.9) !important; transform-origin: top center !important; margin: 0 !important; }
+            
+            /* FIX: Push the rating stars safely below the scrollable pedals */
+            .bottom-hud { 
+                position: relative !important; 
+                bottom: auto !important; 
+                margin-top: 10px !important; 
+                padding-bottom: 40px !important; 
+            }
         }
 
         /* --- MOBILE RESPONSIVE (iPhones and small iPads) --- */
@@ -319,7 +343,7 @@
             aside { width: 100%; order: 2; border-right: none; border-top: 1px solid var(--border); padding: 15px; padding-bottom: 50px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; box-sizing: border-box; }
             aside h3 { grid-column: 1 / -1; margin-top: 15px; margin-bottom: 5px; }
             .catalog-item { margin-bottom: 0; padding: 10px; font-size: 12px; }
-            .founder-credit { grid-column: 1 / -1; margin-top: 30px; } 
+            .founder-credit { grid-column: 1 / -1; margin-top: 30px; padding-bottom: 40px; font-size: 7.5px !important; opacity: 0.4; }
             
             .board-area { order: 1; padding: 0; overflow: hidden; min-height: 450px; display: flex; flex-direction: column; justify-content: flex-start; }
             .preset-title-display { display: none; }
