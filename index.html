@@ -45,7 +45,8 @@
 
         /* --- Fluid Animated Background --- */
         body {
-            background: linear-gradient(-45deg, #050508, #0a1128, #160524, #050508);
+            /* Deep Navy, Cyan, and Emerald Green */
+            background: linear-gradient(-45deg, #020617, #083344, #064e3b, #020617);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             color: var(--text-primary);
@@ -72,13 +73,23 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(120px);
-            opacity: 0.35;
+            opacity: 0.4;
             z-index: -1;
-            animation: float 20s infinite ease-in-out alternate;
+            /* Remove the float animation, we will use JS scroll now */
             pointer-events: none;
+            transition: transform 0.1s linear, opacity 0.5s ease;
         }
-        .orb-1 { width: 500px; height: 500px; background: var(--accent); top: -100px; left: -150px; }
-        .orb-2 { width: 600px; height: 600px; background: #b042ff; bottom: 5%; right: -200px; animation-delay: -5s; }
+        
+        /* Orb 1: Cyan */
+        .orb-1 { 
+            width: 500px; height: 500px; background: var(--accent); 
+            top: -100px; left: -150px; 
+        }
+        /* Orb 2: Emerald Green */
+        .orb-2 { 
+            width: 600px; height: 600px; background: #10b981; 
+            top: 40%; right: -200px; 
+        }
 
         /* --- Glassmorphism Utils --- */
         .glass {
@@ -498,16 +509,32 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Ensure AOS refreshes calculations once images and iframes fully load
+        // Initialize AOS
         window.addEventListener('load', function() {
             AOS.init({
-                once: false,     // <-- CHANGED: Now animations trigger every time you scroll up OR down!
-                mirror: true,    // <-- CHANGED: Allows elements to animate out while scrolling past them
+                once: false,
+                mirror: true,
                 offset: 50,
                 duration: 800,
             });
-            // Force a refresh immediately after init just to be safe
             setTimeout(() => AOS.refresh(), 100);
+        });
+
+        // Dynamic Parallax Scroll Effect for Orbs
+        window.addEventListener('scroll', () => {
+            const scrollDepth = window.scrollY;
+            const maxScroll = document.body.scrollHeight - window.innerHeight;
+            const scrollRatio = scrollDepth / maxScroll; // Value between 0.0 and 1.0
+
+            const orb1 = document.querySelector('.orb-1');
+            const orb2 = document.querySelector('.orb-2');
+
+            // Move Orb 1 down slightly as user scrolls
+            orb1.style.transform = `translateY(${scrollDepth * 0.3}px)`;
+            
+            // Move Orb 2 up, shift it left, and make it more opaque at the bottom
+            orb2.style.transform = `translateY(-${scrollDepth * 0.4}px) translateX(-${scrollRatio * 100}px)`;
+            orb2.style.opacity = 0.3 + (scrollRatio * 0.4); 
         });
 
         // Smooth scroll handler
