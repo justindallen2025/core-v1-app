@@ -484,6 +484,13 @@
         let connectedDevice = null;
         let bleCharacteristic = null;
         let isMuted = false;
+        const factoryDefaults = [
+            { name: "Rock",    slots: ["0B", "02", "08", "05", "00"], knob: 2, params: [[64,64,64], [64,64,64], [64,64,64], [58,64,59], [50,50,50]], bypassed: [false,false,false,false,false] },
+            { name: "Tremolo", slots: ["03", "06", "00", "00", "00"], knob: 0, params: [[50,50,50], [50,50,50], [50,50,50], [50,50,50], [50,50,50]], bypassed: [false,false,false,false,false] },
+            { name: "Aco Sim", slots: ["07", "06", "00", "00", "00"], knob: 0, params: [[50,50,50], [50,50,50], [50,50,50], [50,50,50], [50,50,50]], bypassed: [false,false,false,false,false] },
+            { name: "Empty",   slots: ["00", "00", "00", "00", "00"], knob: 0, params: [[50,50,50], [50,50,50], [50,50,50], [50,50,50], [50,50,50]], bypassed: [false,false,false,false,false] },
+            { name: "Empty",   slots: ["00", "00", "00", "00", "00"], knob: 0, params: [[50,50,50], [50,50,50], [50,50,50], [50,50,50], [50,50,50]], bypassed: [false,false,false,false,false] }
+        ];
 
         let currentPresetIndex = 0;
         let presets = [
@@ -563,15 +570,21 @@
             localStorage.setItem('core_v1_index', currentPresetIndex);
         }
         window.resetCurrentPreset = function() {
-            // The "Safe Zone" Default: Amp Sim + Reverb
-            presets[currentPresetIndex].slots = ["01", "06", "00", "00", "00"];
-            presets[currentPresetIndex].params = [[50,50,50], [50,50,50], [50,50,50], [50,50,50], [50,50,50]];
-            presets[currentPresetIndex].bypassed = [false, false, false, false, false];
-            presets[currentPresetIndex].knob = 0;
+            // 1. Grab the untouched factory default for whichever preset we are currently on
+            let def = factoryDefaults[currentPresetIndex];
+            
+            // 2. Perform a "Deep Copy" so we don't accidentally link the live board to the vault
+            presets[currentPresetIndex].name = def.name;
+            presets[currentPresetIndex].slots = [...def.slots];
+            presets[currentPresetIndex].params = def.params.map(row => [...row]);
+            presets[currentPresetIndex].bypassed = [...def.bypassed];
+            presets[currentPresetIndex].knob = def.knob;
+
+            // 3. Save the restored preset to localStorage and update the UI
             saveState();
             renderChain();
             
-            // Auto-sync to the guitar if connected
+            // 4. Auto-sync to the guitar if connected
             if (bleCharacteristic) {
                 uploadToGuitar();
             }
