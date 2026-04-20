@@ -374,6 +374,7 @@
             .toast-glass.show { top: 20px; right: 50%; }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
@@ -391,6 +392,10 @@
                 <button class="preset-btn" onclick="changePreset(1)">&#9654;</button>
             </div>
             <span style="color:var(--text-dim); font-weight:800; font-size: 12px; margin-left: 15px; letter-spacing: 2px;" id="presetLabel">PRESET 1</span>
+            
+            <button id="resetBtn" onclick="resetCurrentPreset()" title="Reset Rig" style="margin-left: 10px; padding: 6px 12px; background: rgba(255, 42, 64, 0.1); border-color: rgba(255, 42, 64, 0.3); color: var(--accent-red); border-radius: 8px;">
+                <i class="fa-solid fa-rotate-left"></i>
+            </button>
         </div>
         <div class="nav-right">
             <button id="muteBtn" onclick="toggleMute()">⏻ Mute</button>
@@ -557,6 +562,20 @@
             localStorage.setItem('core_v1_presets', JSON.stringify(presets));
             localStorage.setItem('core_v1_index', currentPresetIndex);
         }
+        window.resetCurrentPreset = function() {
+            // The "Safe Zone" Default: Amp Sim + Reverb
+            presets[currentPresetIndex].slots = ["01", "06", "00", "00", "00"];
+            presets[currentPresetIndex].params = [[50,50,50], [50,50,50], [50,50,50], [50,50,50], [50,50,50]];
+            presets[currentPresetIndex].bypassed = [false, false, false, false, false];
+            presets[currentPresetIndex].knob = 0;
+            saveState();
+            renderChain();
+            
+            // Auto-sync to the guitar if connected
+            if (bleCharacteristic) {
+                uploadToGuitar();
+            }
+        };
 
         // --- CUSTOM ROTARY KNOB PHYSICS ---
         let activeKnob = null;
@@ -997,9 +1016,17 @@
                 document.getElementById('toastEmail').style.border = 'none';
                 toast.classList.add('show');
 
-                // Auto-hide toast after 10 seconds if they ignore it
+                // Small Confetti Pop for rating
+                confetti({
+                    particleCount: 40,
+                    spread: 60,
+                    origin: { y: 0.8 },
+                    colors: ['#00e5ff', '#fbbf24', '#00ff88']
+                });
+
+                // Auto-hide toast after 45 seconds (increased from 10)
                 clearTimeout(toastTimeout);
-                toastTimeout = setTimeout(closeToast, 10000);
+                toastTimeout = setTimeout(closeToast, 45000);
             });
         });
 
@@ -1030,8 +1057,16 @@
             document.getElementById('toastDefault').style.display = 'none';
             document.getElementById('toastSuccess').style.display = 'block';
             
+            // HUGE Confetti Blast for Email Submission
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.6 },
+                colors: ['#00e5ff', '#ff2a40', '#00ff88', '#fbbf24']
+            });
+            
             // Close smoothly after showing success
-            setTimeout(closeToast, 2500);
+            setTimeout(closeToast, 3500);
         }
 
         loadState();
