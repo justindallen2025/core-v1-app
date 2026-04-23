@@ -401,15 +401,18 @@
 
         .timeline-gallery img {
             width: 100%;
-            max-width: 400px;
-            height: auto;
+            height: 280px; /* Locks all single images to the exact same height */
+            object-fit: cover; /* Crops the image perfectly without stretching it */
+            object-position: center; /* Ensures the middle of the photo is the focal point */
             border-radius: 8px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            object-fit: cover;
         }
 
         .gallery-split img {
             width: calc(50% - 7.5px); 
+            height: 220px; /* Slightly shorter for the side-by-side shots */
+            object-fit: cover;
+            object-position: center;
         }
 
         /* --- 3D CAD Iframe Styling --- */
