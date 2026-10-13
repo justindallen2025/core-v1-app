@@ -19,12 +19,11 @@
     
     <style>
         :root {
-            --accent: #00e5ff;
-            --accent-green: #10b981;
+            --accent: #5885b2; /* Professional steel-blue matched to logo */
             --text-primary: #ffffff;
             --text-secondary: #94a3b8;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
             --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
@@ -46,7 +45,7 @@
             font-family: var(--font-main);
             line-height: 1.5;
             scroll-behavior: smooth;
-            background: transparent; 
+            background: #020617; 
         }
 
         .fixed-bg {
@@ -59,35 +58,7 @@
         }
 
         .bg-base {
-            background: linear-gradient(135deg, #020617 0%, #082f49 100%);
-        }
-
-        .bg-scroll {
-            background: linear-gradient(135deg, #083344 0%, #064e3b 100%);
-            opacity: 0; 
-            transition: opacity 0.1s ease-out;
-        }
-
-        .ambient-orb {
-            position: fixed; 
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.45;
-            z-index: -2;
-            pointer-events: none;
-            transition: transform 0.1s ease-out;
-        }
-        
-        .orb-1 { 
-            width: 500px; height: 500px; 
-            background: var(--accent); 
-            top: -100px; left: -100px; 
-        }
-        
-        .orb-2 { 
-            width: 600px; height: 600px; 
-            background: var(--accent-green); 
-            bottom: -200px; right: -100px; 
+            background: linear-gradient(135deg, #020617 0%, #060a17 100%);
         }
 
         .page-wrapper {
@@ -97,7 +68,7 @@
 
         /* --- Glassmorphism Utils --- */
         .glass {
-            background: rgba(2, 6, 23, 0.6);
+            background: rgba(15, 23, 42, 0.7);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
@@ -159,8 +130,8 @@
 
         .btn-survey:hover {
             background: var(--accent);
-            color: #000;
-            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(88, 133, 178, 0.3);
         }
 
         /* --- Hero Section --- */
@@ -201,33 +172,34 @@
 
         .btn-primary {
             background: var(--accent);
-            color: #000;
+            color: #fff;
             padding: 14px 28px;
             border-radius: 4px;
             font-weight: 800;
             text-decoration: none;
             transition: all 0.3s;
             border: none;
-            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+            box-shadow: 0 4px 14px rgba(88, 133, 178, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(0, 229, 255, 0.5);
+            box-shadow: 0 6px 20px rgba(88, 133, 178, 0.5);
         }
 
         .btn-outline {
-            border: 1px solid var(--text-secondary);
+            border: 1px solid var(--glass-border);
             color: var(--text-primary);
             padding: 14px 28px;
             border-radius: 4px;
             font-weight: 700;
             text-decoration: none;
             transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .btn-outline:hover {
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.06);
             transform: translateY(-2px);
         }
 
@@ -275,7 +247,7 @@
             overflow: hidden; 
             border: 1px solid var(--glass-border);
             box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            background: rgba(255,255,255,0.02);
+            background: rgba(255,255,255,0.01);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -309,7 +281,7 @@
             content: '';
             position: absolute;
             width: 2px;
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--glass-border);
             top: 0;
             bottom: 0;
             left: 50%;
@@ -347,7 +319,7 @@
             top: 50%;
             transform: translateY(-50%);
             z-index: 1;
-            box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+            box-shadow: 0 0 10px rgba(88, 133, 178, 0.3);
         }
 
         .timeline-item:nth-child(even)::after {
@@ -362,7 +334,7 @@
 
         .timeline-content:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 229, 255, 0.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(88, 133, 178, 0.1);
             border-color: rgba(255, 255, 255, 0.15);
         }
 
@@ -401,16 +373,16 @@
 
         .timeline-gallery img {
             width: 100%;
-            height: 280px; /* Locks all single images to the exact same height */
-            object-fit: cover; /* Crops the image perfectly without stretching it */
-            object-position: center; /* Ensures the middle of the photo is the focal point */
+            height: 280px;
+            object-fit: cover;
+            object-position: center;
             border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border);
         }
 
         .gallery-split img {
             width: calc(50% - 7.5px); 
-            height: 220px; /* Slightly shorter for the side-by-side shots */
+            height: 220px;
             object-fit: cover;
             object-position: center;
         }
@@ -455,21 +427,21 @@
         .btn-large-glowing {
             display: inline-block;
             background: var(--accent);
-            color: #000;
+            color: #fff;
             padding: 18px 40px;
             border-radius: 50px;
             font-weight: 800;
             text-decoration: none;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            box-shadow: 0 0 30px rgba(0, 229, 255, 0.4);
+            box-shadow: 0 4px 20px rgba(88, 133, 178, 0.3);
             transition: all 0.3s;
             margin-top: 30px;
         }
 
         .btn-large-glowing:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 50px rgba(0, 229, 255, 0.6);
+            box-shadow: 0 6px 30px rgba(88, 133, 178, 0.5);
         }
 
         /* --- Footer --- */
@@ -543,17 +515,13 @@
 <body>
 
     <div class="fixed-bg bg-base"></div>
-    <div class="fixed-bg bg-scroll" id="scrollBg"></div>
-    
-    <div class="ambient-orb orb-1" id="orb1"></div>
-    <div class="ambient-orb orb-2" id="orb2"></div>
 
     <div class="page-wrapper">
         <nav class="glass">
             <a href="/" class="logo"><img src="images/logo.png" alt="Signl Systems" style="height: 48px;"></a>
             <div class="nav-actions">
                 <a href="/app" class="nav-link">Enter Web App</a>
-                <a href="https://forms.gle/FPhgCCo9by2XEEeY9" class="btn-survey" target="_blank">Take Survey</a>
+                <a href="https://tally.so/r/eqX9gx" class="btn-survey" target="_blank">Join Waitlist</a>
             </div>
         </nav>
 
@@ -562,7 +530,7 @@
                 <h1>The Software-Defined Guitar</h1>
                 <p>Studio-grade tone. Zero setup friction. Acoustic-like freedom.</p>
                 <div class="hero-btns">
-                    <a href="https://forms.gle/FPhgCCo9by2XEEeY9" class="btn-primary" target="_blank">Help Us Build It</a>
+                    <a href="https://tally.so/r/eqX9gx" class="btn-primary" target="_blank">Join the Waitlist</a>
                     <a href="#solution" class="btn-outline">See the Tech</a>
                 </div>
             </div>
@@ -714,9 +682,9 @@
                 <span class="kicker">PATENT PENDING | BUILT AT GEORGIA TECH</span>
                 <h2>Join the Priority Waitlist</h2>
                 <p class="body-text" style="margin: 0 auto 10px auto;">
-                    We are preparing for our Phase 1 hardware manufacturing run. We need 10-15 dedicated beta testers to help validate our DSP algorithms before public launch. Drop your email in the survey to get on the shortlist.
+                    We are preparing for our Phase 1 hardware manufacturing run. We need 10-15 dedicated beta testers to help validate our DSP algorithms before public launch. Drop your email to get on the shortlist.
                 </p>
-                <a href="https://forms.gle/FPhgCCo9by2XEEeY9" class="btn-large-glowing" target="_blank">Take the 60-Second Survey</a>
+                <a href="https://tally.so/r/eqX9gx" class="btn-large-glowing" target="_blank">Join the Priority Waitlist</a>
             </div>
         </section>
 
@@ -740,28 +708,6 @@
                 duration: 800,
             });
             setTimeout(() => AOS.refresh(), 100);
-        });
-
-        // The Interactive Scroll Logic
-        window.addEventListener('scroll', () => {
-            const scrollDepth = window.scrollY;
-            const maxScroll = document.body.scrollHeight - window.innerHeight;
-            
-            // Calculate ratio (0.0 at top, 1.0 at bottom)
-            const scrollRatio = maxScroll > 0 ? Math.min(Math.max(scrollDepth / maxScroll, 0), 1) : 0;
-
-            // 1. Fade in the bright cyan/green background layer as you scroll down
-            document.getElementById('scrollBg').style.opacity = scrollRatio * 0.9;
-
-            // 2. Parallax move the orbs based on the scroll ratio
-            const orb1 = document.getElementById('orb1');
-            const orb2 = document.getElementById('orb2');
-
-            // Moves the top cyan orb down and right
-            orb1.style.transform = `translate(${scrollRatio * 20}vw, ${scrollRatio * 30}vh)`;
-            
-            // Moves the bottom green orb up and left
-            orb2.style.transform = `translate(-${scrollRatio * 20}vw, -${scrollRatio * 30}vh)`;
         });
 
         // Smooth scroll handler
